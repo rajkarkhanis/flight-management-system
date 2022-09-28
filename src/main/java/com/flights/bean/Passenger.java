@@ -2,11 +2,13 @@ package com.flights.bean;
 
 import java.math.BigInteger;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;
 
+@Entity
 @Component
 public class Passenger {
 	
@@ -19,7 +21,7 @@ public class Passenger {
 	BigInteger passengerUIN;
 	Double Luggage;
 	
-	
+	public Passenger(){};
 	public Passenger(BigInteger pnrNumber, String passengerName, Integer passengerAge, BigInteger passengerUIN,
 			Double luggage) {
 		super();

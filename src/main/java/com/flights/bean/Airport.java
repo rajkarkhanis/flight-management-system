@@ -2,10 +2,7 @@ package com.flights.bean;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Component
 @Entity
@@ -13,8 +10,7 @@ import javax.persistence.Table;
 public class Airport {
 	
 	@Id
-	@GeneratedValue
-	private int airportId; // Convert to int during next commit for airport
+	@Column(name="id",unique = true,nullable = false)
 	private String airportCode; // BOM, DEL, 
 	private String airportName;
 	private String airportLocation;
@@ -47,7 +43,7 @@ public class Airport {
 	}
 	@Override
 	public String toString() {
-		return "Airport [airportId=" + airportId + ", airportCode=" + airportCode + ", airportName=" + airportName
+		return "Airport [ airportCode=" + airportCode + ", airportName=" + airportName
 				+ ", airportLocation=" + airportLocation + "]";
 	}
 	

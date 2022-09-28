@@ -2,19 +2,26 @@ package com.flights.bean;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
+@Entity
 @Component
 public class ScheduledFlight {
 
     @Id
     @GeneratedValue
     private int scheduledFlightId;
+    @OneToOne
     private Flight flight;
     private int availableSeats;
+    @OneToOne
     private Schedule schedule;
+    public ScheduledFlight(){
 
+    }
     public ScheduledFlight(int scheduledFlightId, Flight flight, int availableSeats, Schedule schedule) {
         this.scheduledFlightId = scheduledFlightId;
         this.flight = flight;

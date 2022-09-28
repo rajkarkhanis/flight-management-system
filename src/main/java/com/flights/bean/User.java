@@ -5,8 +5,11 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
 @Component
+@Table(name="app_user")
 public class User {
 	
 	@Id
@@ -17,7 +20,8 @@ public class User {
 	private String userPassword;
 	private String userPhone;
 	private String userEmail;
-	
+
+	public User(){}
 	public User(int userId, String userType, String userName, String userPassword, String userPhone, String userEmail) {
 		super();
 		this.userId = userId;

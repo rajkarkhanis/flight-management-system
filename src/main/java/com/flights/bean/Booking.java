@@ -3,16 +3,12 @@ package com.flights.bean;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.stereotype.Component;
 
 
+@Entity
 @Component
 @Table
 public class Booking {
@@ -20,9 +16,10 @@ public class Booking {
 	@Id
 	@GeneratedValue
 	private BigInteger bookingId;
+	@ManyToOne
 	private User userId;
 	private Date bookingDate;
-	@OneToMany(mappedBy="booking")
+	@OneToMany
 	private List<Passenger> passengerList;
 	private Double ticketCost;
 	@ManyToOne
