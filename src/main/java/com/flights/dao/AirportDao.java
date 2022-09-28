@@ -1,5 +1,9 @@
 package com.flights.dao;
 
-public interface AirportDao {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.flights.bean.Airport;
+
+public interface AirportDao extends JpaRepository<Airport, Integer>{
 
 }
