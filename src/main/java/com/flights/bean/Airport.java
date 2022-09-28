@@ -8,12 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Component
+@Entity
 @Table
 public class Airport {
 	
 	@Id
 	@GeneratedValue
-	private int airportId;
+	private int airportId; // Convert to int during next commit for airport
 	private String airportCode; // BOM, DEL, 
 	private String airportName;
 	private String airportLocation;

@@ -1,9 +1,12 @@
 package com.flights.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 import com.flights.bean.Airport;
 
-public interface AirportDao extends JpaRepository<Airport, Integer>{
+public interface AirportDao{
 
+	List<Airport> viewAirport(); // Returns a list of all airports
+	
+	Airport viewAirport(String airportCode); // Returns details of an airport identified by its airport code
 }
