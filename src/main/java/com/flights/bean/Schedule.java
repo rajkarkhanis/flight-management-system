@@ -1,11 +1,13 @@
 package com.flights.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.ZonedDateTime;
 
+@Component
 public class Schedule {
     @Id @GeneratedValue
     private int scheduleId;
