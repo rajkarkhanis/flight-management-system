@@ -2,31 +2,28 @@ package com.flights.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.ZonedDateTime;
 
-@Entity
 public class Schedule {
-
     @Id @GeneratedValue
-    private int id;
+    private int scheduleId;
     @Autowired
     private Airport sourceAirport;
     @Autowired
     private Airport destinationAirport;
-    private ZonedDateTime departureTime;
     private ZonedDateTime arrivalTime;
+    private ZonedDateTime departureTime;
 
     public Schedule() {
     }
 
-    public Schedule(Airport sourceAirport, Airport destinationAirport, ZonedDateTime departureTime, ZonedDateTime arrivalTime) {
+    public Schedule(Airport sourceAirport, Airport destinationAirport, ZonedDateTime arrivalTime, ZonedDateTime departureTime) {
         this.sourceAirport = sourceAirport;
         this.destinationAirport = destinationAirport;
-        this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
     }
 
     public Airport getSourceAirport() {
@@ -45,14 +42,6 @@ public class Schedule {
         this.destinationAirport = destinationAirport;
     }
 
-    public ZonedDateTime getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(ZonedDateTime departureTime) {
-        this.departureTime = departureTime;
-    }
-
     public ZonedDateTime getArrivalTime() {
         return arrivalTime;
     }
@@ -61,14 +50,22 @@ public class Schedule {
         this.arrivalTime = arrivalTime;
     }
 
+    public ZonedDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(ZonedDateTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
     @Override
     public String toString() {
         return "Schedule{" +
-                "id=" + id +
+                "scheduleId=" + scheduleId +
                 ", sourceAirport=" + sourceAirport +
                 ", destinationAirport=" + destinationAirport +
-                ", departureTime=" + departureTime +
                 ", arrivalTime=" + arrivalTime +
+                ", departureTime=" + departureTime +
                 '}';
     }
 }
