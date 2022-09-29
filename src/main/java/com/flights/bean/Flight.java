@@ -28,6 +28,7 @@ public class Flight {
 		this.carrierName = carrierName;
 		this.seatCapacity = seatCapacity;
 	}
+	
 	public int getFlightId() {
 		return flightId;
 	}
@@ -43,6 +44,7 @@ public class Flight {
 	public String getCarrierName() {
 		return carrierName;
 	}
+	
 	public void setCarrierName(String carrierName) {
 		this.carrierName = carrierName;
 	}
@@ -63,4 +65,5 @@ public class Flight {
 		return "Flight [flightId=" + flightId + ", flightNumber=" + flightNumber + ", flightModel=" + flightModel
 				+ ", carrierName=" + carrierName + ", seatCapacity=" + seatCapacity + "]";
 	}
+	
 }
