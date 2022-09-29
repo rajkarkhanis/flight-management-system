@@ -1,24 +1,23 @@
 package com.flights.bean;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
+
 @Entity
 @Component
 public class Schedule {
+
     @Id @GeneratedValue
     private int scheduleId;
-    @Autowired
-    @ManyToOne
+
+    @OneToOne
     private Airport sourceAirport;
-    @Autowired
-    @ManyToOne
+
+    @OneToOne
     private Airport destinationAirport;
+
     private ZonedDateTime arrivalTime;
     private ZonedDateTime departureTime;
 
