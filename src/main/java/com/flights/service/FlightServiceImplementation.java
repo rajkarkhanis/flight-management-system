@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.flights.bean.Flight;
 import com.flights.dao.FlightDao;
-
+@Service
 public class FlightServiceImplementation implements FlightService {
     @Autowired
 	FlightDao dao;
@@ -20,7 +21,7 @@ public class FlightServiceImplementation implements FlightService {
 
 	@Override
 	public Flight modifyFlight(Flight flight) {
-		int id=flight.getFlightId();
+		BigInteger id=flight.getFlightNumber();
 		Flight flight1=dao.findById(id).orElseThrow();
 		flight1.setFlightNumber(flight.getFlightNumber());
 		flight1.setFlightModel(flight.getFlightModel());
@@ -32,8 +33,7 @@ public class FlightServiceImplementation implements FlightService {
 
 	@Override
 	public Flight viewFlight(BigInteger flightNumber) {
-		int flightNum=flightNumber.intValue();
-		Optional<Flight> f=dao.findById(flightNum);
+		Optional<Flight> f=dao.findById(flightNumber);
 		if(f.isPresent())
 			return f.get();
 		else
@@ -53,10 +53,10 @@ public class FlightServiceImplementation implements FlightService {
 
 	@Override
 	public void deleteFlight(BigInteger flightNumber) {
-		int flightNum=flightNumber.intValue();
-		Optional<Flight> f=dao.findById(flightNum);
+
+		Optional<Flight> f=dao.findById(flightNumber);
 		if(f.isPresent())
-			dao.deleteById(flightNum);
+			dao.deleteById(flightNumber);
 	}
 
 	@Override

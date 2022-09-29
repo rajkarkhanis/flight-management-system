@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 public class Flight {
 	@Id
 	@GeneratedValue
-	private int flightId;
 	private BigInteger flightNumber;
 	private String flightModel;
 	private String carrierName;
@@ -20,21 +19,16 @@ public class Flight {
 	public Flight() {
 		
 	}
-	public Flight(int flightId,BigInteger flightNumber, String flightModel, String carrierName, Integer seatCapacity) {
+	public Flight(BigInteger flightNumber, String flightModel, String carrierName, Integer seatCapacity) {
 		super();
-		this.flightId=flightId;
+		
 		this.flightNumber = flightNumber;
 		this.flightModel = flightModel;
 		this.carrierName = carrierName;
 		this.seatCapacity = seatCapacity;
 	}
 	
-	public int getFlightId() {
-		return flightId;
-	}
-	public void setFlightId(int flightId) {
-		this.flightId = flightId;
-	}
+	
 	public Integer getSeatCapacity() {
 		return seatCapacity;
 	}
@@ -62,8 +56,8 @@ public class Flight {
 	}
 	@Override
 	public String toString() {
-		return "Flight [flightId=" + flightId + ", flightNumber=" + flightNumber + ", flightModel=" + flightModel
-				+ ", carrierName=" + carrierName + ", seatCapacity=" + seatCapacity + "]";
+		return "Flight [flightNumber=" + flightNumber + ", flightModel=" + flightModel + ", carrierName=" + carrierName
+				+ ", seatCapacity=" + seatCapacity + "]";
 	}
 	
 }
