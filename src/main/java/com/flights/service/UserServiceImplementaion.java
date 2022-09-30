@@ -3,11 +3,14 @@ package com.flights.service;
 import com.flights.bean.User;
 import com.flights.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-public class UserServiceImpl implements UserService {
+@Service
+public class UserServiceImplementaion implements UserService {
     @Autowired
     UserDao repo;
 
@@ -35,11 +38,11 @@ public class UserServiceImpl implements UserService {
     public User updateUser(User user) {
         int id = user.getUserId();
 		User u = repo.findById(id).orElseThrow();
-		u.setUserName(u.getUserName());
-		u.setUserEmail(u.getUserEmail());
-        u.setUserPassword(u.getUserPassword());
-        u.setUserType(u.getUserType());
-        u.setUserPhone(u.getUserPhone());
+		u.setUserName(user.getUserName());
+		u.setUserEmail(user.getUserEmail());
+        u.setUserPassword(user.getUserPassword());
+        u.setUserType(user.getUserType());
+        u.setUserPhone(user.getUserPhone());
 		repo.save(u);
 		return u;
     }
