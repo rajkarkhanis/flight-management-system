@@ -22,9 +22,8 @@ public class User {
 	private String userEmail;
 
 	public User(){}
-	public User(int userId, String userType, String userName, String userPassword, String userPhone, String userEmail) {
+	public User(String userType, String userName, String userPassword, String userPhone, String userEmail) {
 		super();
-		this.userId = userId;
 		this.userType = userType;
 		this.userName = userName;
 		this.userPassword = userPassword;
