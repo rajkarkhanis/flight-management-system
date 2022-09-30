@@ -53,7 +53,7 @@ public class FlightController {
 		return lf;	
 	}
 	
-	@DeleteMapping(path="/deleteflight/{flightNumber}") // variable name should be given
+	@DeleteMapping(path="/deleteflight/{flightNumber}") // ..variable name should be given
 	public void deleteFlight(@PathVariable BigInteger flightNumber)
 	{
 		flightservice.deleteFlight(flightNumber);
