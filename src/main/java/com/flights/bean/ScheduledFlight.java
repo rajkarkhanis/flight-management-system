@@ -22,8 +22,7 @@ public class ScheduledFlight {
     public ScheduledFlight(){
 
     }
-    public ScheduledFlight(int scheduledFlightId, Flight flight, int availableSeats, Schedule schedule) {
-        this.scheduledFlightId = scheduledFlightId;
+    public ScheduledFlight(Flight flight, int availableSeats, Schedule schedule) {
         this.flight = flight;
         this.availableSeats = availableSeats;
         this.schedule = schedule;

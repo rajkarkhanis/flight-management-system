@@ -33,7 +33,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     // PDF mentions return type as Flight
     @Override
     public List<ScheduledFlight> viewScheduledFlights(BigInteger flightNumber) {
-        Flight flight = flightDao.findById(flightNumber.intValue()).orElseThrow();
+        Flight flight = flightDao.findById(flightNumber).orElseThrow();
         return List.of(scheduledFlightDao.getScheduledFlightByFlight(flight));
     }
 
@@ -52,7 +52,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
 
     @Override
     public void deleteScheduledFlight(BigInteger flightNumber) {
-        Flight inputFlight = flightDao.findById(flightNumber.intValue()).orElseThrow();
+        Flight inputFlight = flightDao.findById(flightNumber).orElseThrow();
         ScheduledFlight scheduledFlight = scheduledFlightDao.getScheduledFlightByFlight(inputFlight);
         scheduledFlightDao.delete(scheduledFlight);
     }
