@@ -15,14 +15,14 @@ public class Booking {
 	
 	@Id
 	@GeneratedValue
-	private BigInteger bookingId;
+	private int bookingId;
 	@ManyToOne
 	private User userId;
 	private Date bookingDate;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Passenger> passengerList;
 	private Double ticketCost;
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Flight flight;
 	
 	public Booking() {
@@ -72,10 +72,10 @@ public class Booking {
 	public void setNoOfPassengers(Integer noOfPassengers) {
 		this.noOfPassengers = noOfPassengers;
 	}
-	public BigInteger getBookingId() {
+	public int getBookingId() {
 		return bookingId;
 	}
-	public Booking(BigInteger bookingId, User userId, Date bookingDate, List<Passenger> passengerList,
+	public Booking(int bookingId, User userId, Date bookingDate, List<Passenger> passengerList,
 			Double ticketCost, Flight flight, Integer noOfPassengers) {
 		super();
 		this.bookingId = bookingId;
