@@ -8,11 +8,13 @@ import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduledFlightDao;
 import com.flights.exception.SeatNotAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ScheduledFlightServiceImplementation implements ScheduledFlightService{
 
     @Autowired
@@ -27,7 +29,8 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
 
     @Override
     public List<ScheduledFlight> viewScheduledFlights(Airport firstAirport, Airport secondAirport, LocalDate localDate) {
-        return scheduledFlightDao.getScheduledFlights(firstAirport, secondAirport, localDate);
+//        return scheduledFlightDao.getScheduledFlights(firstAirport, secondAirport, localDate);
+        return null;
     }
 
     // Changing return type from PDF Spec

@@ -61,11 +61,11 @@ public class AdminController {
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/viewScheduledFlights")
-    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlights(@RequestBody Airport source, @RequestBody Airport destination, @RequestBody LocalDate date) {
-        List<ScheduledFlight> scheduledFlightList = scheduledFlightService.viewScheduledFlights(source, destination, date);
-        return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
-    }
+//    @GetMapping(value = "/viewScheduledFlightsOnDate")
+//    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlights(@RequestBody Airport source, @RequestBody Airport destination, @RequestBody LocalDate date) {
+//        List<ScheduledFlight> scheduledFlightList = scheduledFlightService.viewScheduledFlights(source, destination, date);
+//        return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
+//    }
 
     @GetMapping(value = "/viewScheduledFlights")
     public ResponseEntity<List<ScheduledFlight>> viewScheduledFlights() {
@@ -74,7 +74,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/viewScheduledFlights/{flightNumber}")
-    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlights(@PathVariable BigInteger flightNumber) {
+    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlightsById(@PathVariable BigInteger flightNumber) {
         List<ScheduledFlight> scheduledFlightList = scheduledFlightService.viewScheduledFlights(flightNumber);
         return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
     }
