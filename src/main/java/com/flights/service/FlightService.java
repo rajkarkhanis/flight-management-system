@@ -3,8 +3,10 @@ package com.flights.service;
 import java.math.BigInteger;
 import java.util.List;
 
-import com.flights.bean.Flight;
+import org.springframework.stereotype.Service;
 
+import com.flights.bean.Flight;
+@Service
 public interface FlightService {
    
 	public Flight addFlight(Flight flight);

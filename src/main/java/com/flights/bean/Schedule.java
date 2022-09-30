@@ -3,6 +3,7 @@ package com.flights.bean;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -18,13 +19,16 @@ public class Schedule {
     @OneToOne
     private Airport destinationAirport;
 
-    private ZonedDateTime arrivalTime;
-    private ZonedDateTime departureTime;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime arrivalTime;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime departureTime;
 
     public Schedule() {
     }
 
-    public Schedule(Airport sourceAirport, Airport destinationAirport, ZonedDateTime arrivalTime, ZonedDateTime departureTime) {
+    public Schedule(Airport sourceAirport, Airport destinationAirport, LocalDateTime arrivalTime, LocalDateTime departureTime) {
         this.sourceAirport = sourceAirport;
         this.destinationAirport = destinationAirport;
         this.arrivalTime = arrivalTime;
@@ -47,19 +51,19 @@ public class Schedule {
         this.destinationAirport = destinationAirport;
     }
 
-    public ZonedDateTime getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(ZonedDateTime arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public ZonedDateTime getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(ZonedDateTime departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
