@@ -4,6 +4,7 @@ import com.flights.bean.Airport;
 import com.flights.bean.Flight;
 import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
+import com.flights.exception.SeatNotAvailable;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -29,5 +30,5 @@ public interface ScheduledFlightService {
     void deleteScheduledFlight(BigInteger flightNumber);
 
     // Validate attributes of scheduled flight
-    void validateScheduledFlight(ScheduledFlight scheduledFlight);
+    void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable;
 }

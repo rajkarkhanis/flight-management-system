@@ -2,6 +2,7 @@ package com.flights.service;
 
 import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
+import com.flights.exception.InvalidPassengerUIN;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,6 @@ public interface BookingService {
     public void validateBooking(Booking booking) throws Exception;
 
     // Validates the attributes of a passenger.
-    public void validatePassenger(Passenger passenger);
+    public void validatePassenger(Passenger passenger) throws InvalidPassengerUIN;
 
 }

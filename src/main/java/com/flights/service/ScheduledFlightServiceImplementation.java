@@ -6,6 +6,7 @@ import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduledFlightDao;
+import com.flights.exception.SeatNotAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
@@ -58,7 +59,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     }
 
     @Override
-    public void validateScheduledFlight(ScheduledFlight scheduledFlight) {
+    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable {
         // Throw custom exceptions in case of failure
         /*
         scheduledFlight.availableSeats >= 0
@@ -69,5 +70,8 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
         scheduledFlight.Schedule.sourceAirport.airportName != null
         scheduledFlight.Schedule.sourceAirport.airportLocation != null
          */
+        if (scheduledFlight.getAvailableSeats() <= 0) {
+            throw new SeatNotAvailable("Seats not available");
+        }
     }
 }
