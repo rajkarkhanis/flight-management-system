@@ -29,8 +29,8 @@ public class BookingServiceImpl implements  BookingService{
 
     @Override
     public Booking modifyBooking(Booking booking) {
-        BigInteger id = booking.getBookingId();
-        Booking b = repo.findById(id.intValue()).orElseThrow();
+        int id = booking.getBookingId();
+        Booking b = repo.findById(id).orElseThrow();
         b.setBookingDate(booking.getBookingDate());
         b.setPassengerList(booking.getPassengerList());
         b.setTicketCost(booking.getTicketCost());

@@ -17,6 +17,7 @@ public class BookingController {
 
     @PostMapping("/addBooking")
     public Booking addNewBooking(@RequestBody Booking newBooking) throws Exception {
+        User u = new User(123, "admin", "admin", "user", "75387539834", "abc@gmail.com");
         Booking b = bookingService.addBooking(newBooking);
         return b;
     }
