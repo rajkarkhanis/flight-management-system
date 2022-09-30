@@ -17,7 +17,7 @@ public interface ScheduledFlightService {
     List<ScheduledFlight> viewScheduledFlights(Airport firstAirport, Airport secondAirport, LocalDate localDate);
 
     // Return list of scheduled flights by flight number
-    Flight viewScheduledFlights(BigInteger flightNumber);
+    List<ScheduledFlight> viewScheduledFlights(BigInteger flightNumber);
 
     // Show all details and status of all flights
     List<ScheduledFlight> viewScheduledFlight();
