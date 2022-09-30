@@ -19,10 +19,8 @@ public class Flight {
 	public Flight() {
 		
 	}
-	public Flight(BigInteger flightNumber, String flightModel, String carrierName, Integer seatCapacity) {
+	public Flight(String flightModel, String carrierName, Integer seatCapacity) {
 		super();
-		
-		this.flightNumber = flightNumber;
 		this.flightModel = flightModel;
 		this.carrierName = carrierName;
 		this.seatCapacity = seatCapacity;
