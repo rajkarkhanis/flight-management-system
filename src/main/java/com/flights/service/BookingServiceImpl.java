@@ -4,6 +4,7 @@ import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.bean.ScheduledFlight;
 import com.flights.dao.BookingDao;
+import com.flights.exception.SeatNotAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,11 +40,9 @@ public class BookingServiceImpl implements  BookingService{
     }
 
     @Override
-    public List<Booking> viewBooking(int bookingId) {
+    public Booking viewBooking(int bookingId) {
         Booking b = repo.findById(bookingId).orElseThrow();
-        List<Booking> output = new ArrayList<Booking>();
-        output.add(b);
-        return output;
+        return b;
     }
 
     @Override
@@ -63,7 +62,7 @@ public class BookingServiceImpl implements  BookingService{
 
         // booking.getPassengerList().size() should be less than available seats in scheduled flight
         if(booking.getPassengerList().size() > scheduledFlightRepo.getAvailableSeats()) {
-            throw new Exception("Passenger list exceeds available seats");
+            throw new SeatNotAvailable("Passenger list exceeds available seats");
         }
 
     }

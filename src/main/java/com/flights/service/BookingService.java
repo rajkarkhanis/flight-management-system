@@ -17,7 +17,8 @@ public interface BookingService {
 
     // Retrieves a booking made
     //by the user based on the booking id.
-    public List<Booking> viewBooking(int bookingId);
+    // Differs from PDF
+    public Booking viewBooking(int bookingId);
 
     // Retrieves a list of all the bookings made.
     public List<Booking> viewBooking();
