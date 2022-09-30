@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface BookingService {
 
     // Creates a new booking
-    public Booking addBooking(Booking booking);
+    public Booking addBooking(Booking booking) throws Exception;
 
     // Modifies a previous booking.
     public Booking modifyBooking(Booking booking);
@@ -26,7 +26,7 @@ public interface BookingService {
     public void deleteBooking(int bookingId);
 
     // Validates the attributes of a booking
-    public void validateBooking(Booking booking);
+    public void validateBooking(Booking booking) throws Exception;
 
     // Validates the attributes of a passenger.
     public void validatePassenger(Passenger passenger);
