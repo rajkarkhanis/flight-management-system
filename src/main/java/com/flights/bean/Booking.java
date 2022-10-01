@@ -75,10 +75,9 @@ public class Booking {
 	public int getBookingId() {
 		return bookingId;
 	}
-	public Booking(int bookingId, User userId, Date bookingDate, List<Passenger> passengerList,
+	public Booking(User userId, Date bookingDate, List<Passenger> passengerList,
 			Double ticketCost, Flight flight, Integer noOfPassengers) {
 		super();
-		this.bookingId = bookingId;
 		this.userId = userId;
 		this.bookingDate = bookingDate;
 		this.passengerList = passengerList;
