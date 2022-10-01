@@ -53,6 +53,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidAirport.class)
     public ResponseEntity<?> invalidAirport(InvalidAirport ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 }
