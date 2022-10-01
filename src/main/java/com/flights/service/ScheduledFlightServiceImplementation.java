@@ -29,8 +29,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
 
     @Override
     public List<ScheduledFlight> viewScheduledFlights(Airport firstAirport, Airport secondAirport, LocalDate localDate) {
-//        return scheduledFlightDao.getScheduledFlights(firstAirport, secondAirport, localDate);
-        return null;
+        return scheduledFlightDao.getScheduledFlights(firstAirport, secondAirport, localDate);
     }
 
     // Changing return type from PDF Spec

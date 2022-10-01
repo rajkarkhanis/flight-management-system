@@ -13,10 +13,10 @@ public class Schedule {
     @Id @GeneratedValue
     private int scheduleId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Airport sourceAirport;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Airport destinationAirport;
 
     @Column(columnDefinition = "TIMESTAMP")
