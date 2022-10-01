@@ -66,9 +66,9 @@ public class FlightServiceImplementation implements FlightService {
 	public void validateFlight(Flight flight) throws InvalidDataEntry {
 		if(flight.getSeatCapacity()<=0)
 			throw new InvalidDataEntry("The seat capacity must be greater than zero");
-		if(flight.getFlightModel()!=null)
+		if(flight.getFlightModel()==null)
 			throw new InvalidDataEntry("The Flight Model must not be NULL");
-		if(flight.getCarrierName()!=null)
+		if(flight.getCarrierName()==null)
 			throw  new InvalidDataEntry("The CarrierName must not be null");
 
 	}
