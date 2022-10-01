@@ -6,6 +6,7 @@ import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduledFlightDao;
+import com.flights.exception.InvalidDataEntry;
 import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
 import com.flights.exception.SeatNotAvailable;
@@ -27,7 +28,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     @Autowired
     FlightService flightService;
     @Override
-    public ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists {
+    public ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry {
         validateScheduledFlight(scheduledFlight);
         return scheduledFlightDao.save(scheduledFlight);
     }
@@ -73,7 +74,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     }
 
     @Override
-    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists {
+    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry {
         // Throw custom exceptions in case of failure
         /*
         scheduledFlight.availableSeats >= 0

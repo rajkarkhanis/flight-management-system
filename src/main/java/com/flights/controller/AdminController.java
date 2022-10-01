@@ -63,7 +63,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/scheduleFlight")
-    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists {
+    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry {
         ScheduledFlight addedFlight = scheduledFlightService.scheduleFlight(scheduledFlight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
