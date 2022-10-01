@@ -4,6 +4,8 @@ import com.flights.bean.Airport;
 import com.flights.bean.Flight;
 import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
+import com.flights.exception.InvalidDataEntry;
+import com.flights.exception.RecordNotFound;
 import com.flights.service.FlightService;
 import com.flights.service.ScheduledFlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class AdminController {
     ScheduledFlightService scheduledFlightService;
 
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) {
+    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry {
         Flight addedFlight = flightService.addFlight(flight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
@@ -37,19 +39,19 @@ public class AdminController {
     }
 
     @GetMapping(value = "/viewFlight/{flightNumber}")
-    public ResponseEntity<Flight> viewFlight(@PathVariable BigInteger flightNumber) {
+    public ResponseEntity<Flight> viewFlight(@PathVariable BigInteger flightNumber) throws RecordNotFound {
         Flight flight = flightService.viewFlight(flightNumber);
         return new ResponseEntity<>(flight, HttpStatus.OK);
     }
 
     @PutMapping(value = "/modifyFlight")
-    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) {
+    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) throws RecordNotFound, InvalidDataEntry {
         Flight modifiedFlight = flightService.modifyFlight(flight);
         return new ResponseEntity<>(modifiedFlight, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deleteFlight/{flightNumber}")
-    public ResponseEntity<String> deleteFlight(@PathVariable BigInteger flightNumber) {
+    public ResponseEntity<String> deleteFlight(@PathVariable BigInteger flightNumber) throws RecordNotFound {
         flightService.deleteFlight(flightNumber);
         String message = "Flight Deleted Successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);

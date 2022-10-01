@@ -3,6 +3,8 @@ package com.flights.controller;
 import java.math.BigInteger;
 import java.util.List;
 
+import com.flights.exception.InvalidDataEntry;
+import com.flights.exception.RecordNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,24 +26,21 @@ public class FlightController {
 	
 	
 	@PostMapping("addflight")
-	public Flight addFlight(@RequestBody Flight f)
-	{
+	public Flight addFlight(@RequestBody Flight f) throws InvalidDataEntry {
 		Flight f1=flightservice.addFlight(f);
 		
 		return f1;
 		
 	}
 	@PutMapping(path="/updateflight")
-	public Flight modifyFlight(@RequestBody Flight f) 
-	{
+	public Flight modifyFlight(@RequestBody Flight f) throws RecordNotFound, InvalidDataEntry {
 		Flight f1=flightservice.modifyFlight(f);
 		
 	
 		return f1;
 	}
 	@GetMapping("viewflightbyflightnumber/{flightNumber}")
-	public Flight viewFlight(@PathVariable BigInteger flightNumber)
-	{
+	public Flight viewFlight(@PathVariable BigInteger flightNumber) throws RecordNotFound {
 		Flight f2=flightservice.viewFlight(flightNumber);
 		return f2;
 	}
@@ -54,11 +53,11 @@ public class FlightController {
 	}
 	
 	@DeleteMapping(path="/deleteflight/{flightNumber}") // ..variable name should be given
-	public void deleteFlight(@PathVariable BigInteger flightNumber)
-	{
+	public void deleteFlight(@PathVariable BigInteger flightNumber) throws RecordNotFound {
 		flightservice.deleteFlight(flightNumber);
 		
 	}
+
 	
 	
 	
