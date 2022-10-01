@@ -2,6 +2,7 @@ package com.flights.controller;
 
 import com.flights.bean.Booking;
 import com.flights.bean.User;
+import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,19 +18,18 @@ public class BookingController {
 
     @PostMapping("/addBooking")
     public Booking addNewBooking(@RequestBody Booking newBooking) throws Exception {
-        // User u = new User(123, "admin", "admin", "user", "75387539834", "abc@gmail.com");
         Booking b = bookingService.addBooking(newBooking);
         return b;
     }
 
     @PutMapping("/updateBooking")
-    public Booking updateBooking(@RequestBody Booking modifyBooking) {
+    public Booking updateBooking(@RequestBody Booking modifyBooking) throws RecordNotFound {
         Booking b = bookingService.modifyBooking(modifyBooking);
         return b;
     }
 
     @GetMapping("/getBookingById/{id}")
-    public Booking getBookingById(@PathVariable("id") int bookingId) {
+    public Booking getBookingById(@PathVariable("id") int bookingId) throws RecordNotFound {
         return bookingService.viewBooking(bookingId);
     }
 
