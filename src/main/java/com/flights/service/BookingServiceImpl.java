@@ -4,6 +4,7 @@ import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.bean.ScheduledFlight;
 import com.flights.dao.BookingDao;
+import com.flights.exception.InvalidDateTime;
 import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
 import com.flights.exception.SeatNotAvailable;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class BookingServiceImpl implements  BookingService{
         b.setBookingDate(booking.getBookingDate());
         b.setPassengerList(booking.getPassengerList());
         b.setTicketCost(booking.getTicketCost());
-        b.setFlight(booking.getFlight());
+        b.setScheduledFlight(booking.getScheduledFlight());
         return b;
     }
 
@@ -69,6 +71,12 @@ public class BookingServiceImpl implements  BookingService{
 
     @Override
     public void validateBooking(Booking booking) throws Exception {
+
+        // Validate if bookingDate is not elapsed
+        if(!booking.getBookingDate().isAfter(LocalDate.now())) {
+            throw new InvalidDateTime("Entered booking date is a past date");
+        }
+
         // booking.getPassengerList().size() should be less than available seats in scheduled flight
         if(booking.getPassengerList().size() > scheduledFlightRepo.getAvailableSeats()) {
             throw new SeatNotAvailable("Passenger list exceeds available seats");
