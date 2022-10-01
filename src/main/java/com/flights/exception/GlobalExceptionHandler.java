@@ -27,8 +27,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> invalidPassengerUIN(InvalidPassengerUIN ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(InvalidDataEntry.class)
     public ResponseEntity<?> invalidDataEntry(InvalidDataEntry ex,WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidAirport.class)
+    public ResponseEntity<?> invalidAirport(InvalidAirport ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
