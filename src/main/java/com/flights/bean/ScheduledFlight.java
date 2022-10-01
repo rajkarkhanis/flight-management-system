@@ -11,12 +11,12 @@ public class ScheduledFlight {
     @Id @GeneratedValue
     private int scheduledFlightId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Flight flight;
 
     private int availableSeats;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Schedule schedule;
 
     public ScheduledFlight(){

@@ -1,7 +1,6 @@
 package com.flights.controller;
 
 import com.flights.bean.Booking;
-import com.flights.bean.User;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;

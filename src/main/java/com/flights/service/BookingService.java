@@ -4,7 +4,6 @@ import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

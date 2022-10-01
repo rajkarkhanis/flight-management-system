@@ -6,8 +6,13 @@ import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
 import com.flights.exception.InvalidDataEntry;
 import com.flights.exception.RecordNotFound;
+import com.flights.exception.RecordAlreadyExists;
+import com.flights.exception.RecordNotFound;
+import com.flights.exception.SeatNotAvailable;
 import com.flights.service.FlightService;
 import com.flights.service.ScheduledFlightService;
+import com.flights.utils.AirportDateWrapper;
+import com.flights.utils.FlightScheduleWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,13 +63,16 @@ public class AdminController {
     }
 
     @PostMapping(value = "/scheduleFlight")
-    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) {
+    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists {
         ScheduledFlight addedFlight = scheduledFlightService.scheduleFlight(scheduledFlight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
 
     @GetMapping(value = "/viewScheduledFlightsOnDate")
-    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlights(@RequestBody Airport source, @RequestBody Airport destination, @RequestBody LocalDate date) {
+    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlights(@RequestBody AirportDateWrapper wrapper) {
+        Airport source = wrapper.getSource();
+        Airport destination = wrapper.getDestination();
+        LocalDate date = wrapper.getDate();
         List<ScheduledFlight> scheduledFlightList = scheduledFlightService.viewScheduledFlights(source, destination, date);
         return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
     }
@@ -76,19 +84,22 @@ public class AdminController {
     }
 
     @GetMapping(value = "/viewScheduledFlights/{flightNumber}")
-    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlightsById(@PathVariable BigInteger flightNumber) {
+    public ResponseEntity<List<ScheduledFlight>> viewScheduledFlightsById(@PathVariable BigInteger flightNumber) throws RecordNotFound {
         List<ScheduledFlight> scheduledFlightList = scheduledFlightService.viewScheduledFlights(flightNumber);
         return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
     }
 
     @PutMapping(value = "/modifyScheduledFlight")
-    public ResponseEntity<ScheduledFlight> modifyScheduledFlight(@RequestBody Flight flight, @RequestBody Schedule schedule, @RequestBody Integer flightId) {
+    public ResponseEntity<ScheduledFlight> modifyScheduledFlight(@RequestBody FlightScheduleWrapper wrapper) throws RecordNotFound {
+        Flight flight = wrapper.getFlight();
+        Schedule schedule = wrapper.getSchedule();
+        Integer flightId = wrapper.getFlightId();
         ScheduledFlight scheduledFlight = scheduledFlightService.modifyScheduledFlight(flight, schedule, flightId);
         return new ResponseEntity<>(scheduledFlight, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deleteScheduledFlight/{flightNumber}")
-    public ResponseEntity<String> deleteScheduledFlight(@PathVariable BigInteger flightNumber) {
+    public ResponseEntity<String> deleteScheduledFlight(@PathVariable BigInteger flightNumber) throws RecordNotFound {
         scheduledFlightService.deleteScheduledFlight(flightNumber);
         String message = "ScheduledFlight Deleted Successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);

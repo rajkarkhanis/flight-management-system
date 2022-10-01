@@ -5,6 +5,7 @@ import com.flights.bean.Flight;
 import com.flights.bean.ScheduledFlight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -19,7 +20,11 @@ public interface ScheduledFlightDao extends JpaRepository<ScheduledFlight, Integ
     // @param source : Airport = first airport
     // @param destination : Airport = second airport
     // @param date : LocalDate = date of schedule
-    String query = "SELECT sf from ScheduledFlight sf WHERE sf.schedule.sourceAirport = :source AND sf.schedule.destinationAirport = :destination AND (date(sf.schedule.departureTime) = :date OR date(sf.schedule.arrivalTime) = :date)";
+    String query = "SELECT sf " +
+            "FROM ScheduledFlight sf " +
+            "WHERE sf.schedule.sourceAirport = :source " +
+            "AND sf.schedule.destinationAirport = :destination " +
+            "AND (date(sf.schedule.departureTime) = :date OR date(sf.schedule.arrivalTime) = :date)";
     @Query(value = query)
-    List<ScheduledFlight> getScheduledFlights(Airport source, Airport destination, LocalDate date);
+    List<ScheduledFlight> getScheduledFlights(@Param("source") Airport source, @Param("destination") Airport destination, @Param("date") LocalDate date);
 }
