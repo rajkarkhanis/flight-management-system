@@ -34,7 +34,7 @@ public class FlightController {
 		
 	}
 	@PutMapping(path="/updateflight")
-	public Flight modifyFlight(@RequestBody Flight f) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists {
+	public Flight modifyFlight(@RequestBody Flight f) throws RecordNotFound, InvalidDataEntry {
 		Flight f1=flightservice.modifyFlight(f);
 		
 	

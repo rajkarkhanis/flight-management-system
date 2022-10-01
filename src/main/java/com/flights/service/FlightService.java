@@ -14,7 +14,7 @@ public interface FlightService {
    
 	public Flight addFlight(Flight flight) throws InvalidDataEntry, RecordAlreadyExists;
 	
-	 public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists;
+	 public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry;
 	 
 	 public Flight viewFlight(BigInteger flightNumber)  throws RecordNotFound;
 	 

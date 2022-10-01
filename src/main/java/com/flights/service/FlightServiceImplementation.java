@@ -32,7 +32,7 @@ public class FlightServiceImplementation implements FlightService {
 	}
 
 	@Override
-	public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists {
+	public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry{
 		BigInteger id=flight.getFlightNumber() ;
 		Supplier s1=()->new RecordNotFound("Flight does not exist in Database");
 		Flight flight1=dao.findById(id).orElseThrow(s1);

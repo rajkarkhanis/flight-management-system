@@ -47,7 +47,7 @@ public class AdminController {
     }
 
     @PutMapping(value = "/modifyFlight")
-    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists {
+    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) throws RecordNotFound, InvalidDataEntry {
         Flight modifiedFlight = flightService.modifyFlight(flight);
         return new ResponseEntity<>(modifiedFlight, HttpStatus.OK);
     }
