@@ -22,7 +22,7 @@ public class BookingController {
     }
 
     @PutMapping("/updateBooking")
-    public Booking updateBooking(@RequestBody Booking modifyBooking) throws RecordNotFound {
+    public Booking updateBooking(@RequestBody Booking modifyBooking) throws Exception {
         Booking b = bookingService.modifyBooking(modifyBooking);
         return b;
     }

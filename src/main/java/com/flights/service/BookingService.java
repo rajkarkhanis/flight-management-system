@@ -14,7 +14,7 @@ public interface BookingService {
     public Booking addBooking(Booking booking) throws Exception;
 
     // Modifies a previous booking.
-    public Booking modifyBooking(Booking booking) throws RecordNotFound;
+    public Booking modifyBooking(Booking booking) throws Exception;
 
     // Retrieves a booking made
     //by the user based on the booking id.

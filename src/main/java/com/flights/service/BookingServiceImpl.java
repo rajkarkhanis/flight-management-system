@@ -28,17 +28,27 @@ public class BookingServiceImpl implements  BookingService{
         validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
             validatePassenger(p);
+
+        // Update available seats
+        int initialSeatsAvailable = booking.getScheduledFlight().getAvailableSeats();
+        int currentSeatsAvailable = initialSeatsAvailable - booking.getNoOfPassengers();
+        booking.getScheduledFlight().setAvailableSeats(currentSeatsAvailable);
+
         repo.save(booking);
         return booking;
     }
 
     @Override
-    public Booking modifyBooking(Booking booking) throws RecordNotFound {
+    public Booking modifyBooking(Booking booking) throws Exception {
         int id = booking.getBookingId();
         if(repo.findById(id) == null)
             throw new RecordNotFound("Booking object does not exist");
+        validateBooking(booking);
+        for (Passenger p: booking.getPassengerList())
+            validatePassenger(p);
         Booking b = repo.findById(id).orElseThrow();
         b.setBookingDate(booking.getBookingDate());
+        b.setNoOfPassengers(booking.getNoOfPassengers());
         b.setPassengerList(booking.getPassengerList());
         b.setTicketCost(booking.getTicketCost());
         b.setScheduledFlight(booking.getScheduledFlight());
@@ -63,8 +73,15 @@ public class BookingServiceImpl implements  BookingService{
     public void deleteBooking(int bookingId) throws RecordNotFound {
         if(repo.findById(bookingId) == null)
             throw new RecordNotFound("Booking object does not exist");
-        Booking b = repo.findById(bookingId).orElseThrow();
-        repo.delete(b);
+
+        Booking booking = repo.findById(bookingId).orElseThrow();
+
+        //  Update available seats impl
+        int initialSeatsAvailable = booking.getScheduledFlight().getAvailableSeats();
+        int currentSeatsAvailable = initialSeatsAvailable - booking.getNoOfPassengers();
+        booking.getScheduledFlight().setAvailableSeats(currentSeatsAvailable);
+
+        repo.delete(booking);
     }
 
     @Override
@@ -76,7 +93,7 @@ public class BookingServiceImpl implements  BookingService{
         }
 
         // booking.getPassengerList().size() should be less than available seats in scheduled flight
-        if(booking.getPassengerList().size() > scheduledFlightRepo.getAvailableSeats()) {
+        if(booking.getNoOfPassengers() > booking.getScheduledFlight().getAvailableSeats()) {
             throw new SeatNotAvailable("Passenger list exceeds available seats");
         }
     }
