@@ -4,10 +4,7 @@ import com.flights.bean.Airport;
 import com.flights.bean.Flight;
 import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
-import com.flights.exception.InvalidDataEntry;
-import com.flights.exception.RecordAlreadyExists;
-import com.flights.exception.RecordNotFound;
-import com.flights.exception.SeatNotAvailable;
+import com.flights.exception.*;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -15,7 +12,7 @@ import java.util.List;
 
 public interface ScheduledFlightService {
     // Schedule a flight along with time, location, and capacity
-    ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry;
+    ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport;
 
     // Return list of flights between two airports on a given date
     List<ScheduledFlight> viewScheduledFlights(Airport firstAirport, Airport secondAirport, LocalDate localDate);
@@ -33,5 +30,5 @@ public interface ScheduledFlightService {
     void deleteScheduledFlight(BigInteger flightNumber) throws RecordNotFound;
 
     // Validate attributes of scheduled flight
-    void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry;
+    void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport;
 }

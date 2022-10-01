@@ -4,11 +4,8 @@ import com.flights.bean.Airport;
 import com.flights.bean.Flight;
 import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
-import com.flights.exception.InvalidDataEntry;
+import com.flights.exception.*;
 import com.flights.exception.RecordNotFound;
-import com.flights.exception.RecordAlreadyExists;
-import com.flights.exception.RecordNotFound;
-import com.flights.exception.SeatNotAvailable;
 import com.flights.service.FlightService;
 import com.flights.service.ScheduledFlightService;
 import com.flights.utils.AirportDateWrapper;
@@ -63,7 +60,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/scheduleFlight")
-    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry {
+    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
         ScheduledFlight addedFlight = scheduledFlightService.scheduleFlight(scheduledFlight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }

@@ -4,19 +4,17 @@ import com.flights.bean.Airport;
 import com.flights.bean.Flight;
 import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
+import com.flights.dao.AirportDao;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduledFlightDao;
-import com.flights.exception.InvalidDataEntry;
-import com.flights.exception.RecordAlreadyExists;
-import com.flights.exception.RecordNotFound;
-import com.flights.exception.SeatNotAvailable;
+import com.flights.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Supplier;
 
 @Service
 public class ScheduledFlightServiceImplementation implements ScheduledFlightService{
@@ -27,8 +25,11 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     FlightDao flightDao;
     @Autowired
     FlightService flightService;
+    @Autowired
+    AirportDao airportDao;
+
     @Override
-    public ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry {
+    public ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
         validateScheduledFlight(scheduledFlight);
         return scheduledFlightDao.save(scheduledFlight);
     }
@@ -74,19 +75,8 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     }
 
     @Override
-    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry {
-        // Throw custom exceptions in case of failure
-        /*
-        scheduledFlight.availableSeats >= 0
-        scheduledFlight.Flight.validateFlight();
-        scheduledFlight.Schedule.arrivalTime is not elapsed
-        scheduledFlight.Schedule.departureTime is not elapsed
-        scheduledFlight.Schedule.sourceAirport.airportCode != null
-        scheduledFlight.Schedule.sourceAirport.airportName != null
-        scheduledFlight.Schedule.sourceAirport.airportLocation != null
-         */
-        List<ScheduledFlight> scheduledFlightList = scheduledFlightDao.findAll();
-        if (scheduledFlightList.contains(scheduledFlight)) {
+    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
+        if (scheduledFlightDao.existsById(scheduledFlight.getScheduledFlightId())) {
             throw new RecordAlreadyExists("ScheduledFlight already exists");
         }
 
@@ -94,6 +84,23 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
 
         if (scheduledFlight.getAvailableSeats() <= 0) {
             throw new SeatNotAvailable("Seats not available");
+        }
+
+        Schedule schedule = scheduledFlight.getSchedule();
+        if (schedule.getArrivalTime().isBefore(LocalDateTime.now())) {
+            throw new InvalidDateTime("Arrival date & time has elapsed");
+        }
+
+        if (schedule.getDepartureTime().isBefore(LocalDateTime.now())) {
+            throw new InvalidDateTime("Departure date & time has elapsed");
+        }
+
+        if (!airportDao.existsById(schedule.getSourceAirport().getAirportCode())) {
+            throw new InvalidAirport("Source Airport is not present in the database");
+        }
+
+        if (!airportDao.existsById(schedule.getDestinationAirport().getAirportCode())) {
+            throw new InvalidAirport("Destination Airport is not present in the database");
         }
     }
 }

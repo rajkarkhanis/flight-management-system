@@ -13,10 +13,10 @@ public class Schedule {
     @Id @GeneratedValue
     private int scheduleId;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private Airport sourceAirport;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private Airport destinationAirport;
 
     @Column(columnDefinition = "TIMESTAMP")

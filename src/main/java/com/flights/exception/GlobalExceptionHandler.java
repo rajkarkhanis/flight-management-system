@@ -50,4 +50,9 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.PRECONDITION_FAILED);
     }
+
+    @ExceptionHandler(InvalidAirport.class)
+    public ResponseEntity<?> invalidAirport(InvalidAirport ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
