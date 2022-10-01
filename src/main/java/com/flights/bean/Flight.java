@@ -2,9 +2,7 @@ package com.flights.bean;
 
 import java.math.BigInteger;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import org.springframework.stereotype.Component;
 @Entity
@@ -13,6 +11,7 @@ public class Flight {
 	@Id
 	@GeneratedValue
 	private BigInteger flightNumber;
+	@Column(unique=true)
 	private String flightModel;
 	private String carrierName;
 	private Integer seatCapacity;

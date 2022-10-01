@@ -29,7 +29,7 @@ public class AdminController {
     ScheduledFlightService scheduledFlightService;
 
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry {
+    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
         Flight addedFlight = flightService.addFlight(flight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
@@ -47,7 +47,7 @@ public class AdminController {
     }
 
     @PutMapping(value = "/modifyFlight")
-    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) throws RecordNotFound, InvalidDataEntry {
+    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists {
         Flight modifiedFlight = flightService.modifyFlight(flight);
         return new ResponseEntity<>(modifiedFlight, HttpStatus.OK);
     }

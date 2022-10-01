@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import com.flights.exception.InvalidDataEntry;
+import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,14 +27,14 @@ public class FlightController {
 	
 	
 	@PostMapping("addflight")
-	public Flight addFlight(@RequestBody Flight f) throws InvalidDataEntry {
+	public Flight addFlight(@RequestBody Flight f) throws InvalidDataEntry, RecordAlreadyExists {
 		Flight f1=flightservice.addFlight(f);
 		
 		return f1;
 		
 	}
 	@PutMapping(path="/updateflight")
-	public Flight modifyFlight(@RequestBody Flight f) throws RecordNotFound, InvalidDataEntry {
+	public Flight modifyFlight(@RequestBody Flight f) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists {
 		Flight f1=flightservice.modifyFlight(f);
 		
 	

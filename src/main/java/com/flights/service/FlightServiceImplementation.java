@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import com.flights.bean.ScheduledFlight;
 import com.flights.exception.InvalidDataEntry;
+import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +19,20 @@ public class FlightServiceImplementation implements FlightService {
     @Autowired
 	FlightDao dao;
 	@Override
-	public Flight addFlight(Flight flight) throws InvalidDataEntry {
+	public Flight addFlight(Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
 		this.validateFlight(flight);
+		List<Flight>flightList=dao.findAll();
+		for(Flight x:flightList) {
+			if (x.getFlightModel().equals(flight.getFlightModel())) {
+				throw new RecordAlreadyExists("Flight already exists");
+			}
+		}
 		dao.save(flight);
 		return flight;
 	}
 
 	@Override
-	public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry {
+	public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry, RecordAlreadyExists {
 		BigInteger id=flight.getFlightNumber() ;
 		Supplier s1=()->new RecordNotFound("Flight does not exist in Database");
 		Flight flight1=dao.findById(id).orElseThrow(s1);
@@ -40,8 +48,8 @@ public class FlightServiceImplementation implements FlightService {
 	@Override
 	public Flight viewFlight(BigInteger flightNumber) throws RecordNotFound{
 		Supplier s1=()->new RecordNotFound("Flight does not exist in database");
-		Flight f=dao.findById(flightNumber).orElseThrow(s1);
-		return f;
+		Flight flight=dao.findById(flightNumber).orElseThrow(s1);
+		return flight;
 		//Flight f1=(Flight) f.get();
 	    //return f1;
 		
@@ -50,8 +58,8 @@ public class FlightServiceImplementation implements FlightService {
 
 	@Override
 	public List<Flight> viewFlight() {
-		List<Flight>fl=dao.findAll();
-		return fl;
+		List<Flight>flightList=dao.findAll();
+		return flightList;
 		
 	}
 
@@ -66,9 +74,9 @@ public class FlightServiceImplementation implements FlightService {
 	public void validateFlight(Flight flight) throws InvalidDataEntry {
 		if(flight.getSeatCapacity()<=0)
 			throw new InvalidDataEntry("The seat capacity must be greater than zero");
-		if(flight.getFlightModel()==null)
+		if(flight.getFlightModel()==null || flight.getFlightModel().isEmpty())
 			throw new InvalidDataEntry("The Flight Model must not be NULL");
-		if(flight.getCarrierName()==null)
+		if(flight.getCarrierName()==null || flight.getCarrierName().isEmpty())
 			throw  new InvalidDataEntry("The CarrierName must not be null");
 
 	}
