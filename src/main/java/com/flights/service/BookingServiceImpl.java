@@ -41,17 +41,23 @@ public class BookingServiceImpl implements  BookingService{
     @Override
     public Booking modifyBooking(Booking booking) throws Exception {
         int id = booking.getBookingId();
+
         if(repo.findById(id) == null)
             throw new RecordNotFound("Booking object does not exist");
+
         validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
             validatePassenger(p);
+
         Booking b = repo.findById(id).orElseThrow();
+
         b.setBookingDate(booking.getBookingDate());
         b.setNoOfPassengers(booking.getNoOfPassengers());
         b.setPassengerList(booking.getPassengerList());
         b.setTicketCost(booking.getTicketCost());
         b.setScheduledFlight(booking.getScheduledFlight());
+
+        repo.save(b);
         return b;
     }
 
@@ -59,6 +65,7 @@ public class BookingServiceImpl implements  BookingService{
     public Booking viewBooking(int bookingId) throws RecordNotFound {
         if(repo.findById(bookingId) == null)
             throw new RecordNotFound("Booking object does not exist");
+
         Booking b = repo.findById(bookingId).orElseThrow();
         return b;
     }
