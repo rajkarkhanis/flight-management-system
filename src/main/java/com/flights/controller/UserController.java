@@ -54,6 +54,7 @@ public class UserController {
                 scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
                 newBooking.getNoOfPassengers()
         );
+        bookingService.addBooking(newBookingObj);
         return new ResponseEntity<>(newBookingObj, HttpStatus.OK);
     }
 
