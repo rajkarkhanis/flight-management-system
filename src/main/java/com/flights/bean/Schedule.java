@@ -35,6 +35,10 @@ public class Schedule {
         this.departureTime = departureTime;
     }
 
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
     public Airport getSourceAirport() {
         return sourceAirport;
     }

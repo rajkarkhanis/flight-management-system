@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AirportDao extends JpaRepository<Airport,String> {
+    Airport findByAirportCode(String sourceAirportCode);
 //
 //	List<Airport> viewAirport(); // Returns a list of all airports
 //

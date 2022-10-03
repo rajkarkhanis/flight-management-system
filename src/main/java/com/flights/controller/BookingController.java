@@ -38,7 +38,7 @@ public class BookingController {
 
         // Get userId from JWT auth
         int userId = 35;
-        Booking test = new Booking(
+        Booking newBookingObj = new Booking(
             userDao.findByUserId(userId),
                 newBooking.getBookingDate(),
                 newBooking.getPassengerList().stream().map(p -> passengerService.createPassenger(p)).collect(Collectors.toList()),
@@ -46,7 +46,8 @@ public class BookingController {
                 scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
                 newBooking.getNoOfPassengers()
         );
-        return test;
+        bookingService.addBooking(newBookingObj);
+        return newBookingObj;
     }
 
     @PutMapping("/updateBooking")

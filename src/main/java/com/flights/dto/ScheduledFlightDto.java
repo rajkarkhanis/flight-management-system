@@ -6,19 +6,9 @@ import com.flights.bean.Schedule;
 import java.math.BigInteger;
 
 public class ScheduledFlightDto {
-
-    private int scheduledFlightId;
     private BigInteger flightNumber;
     private int availableSeats;
     private int scheduleId;
-
-    public int getScheduledFlightId() {
-        return scheduledFlightId;
-    }
-
-    public void setScheduledFlightId(int scheduledFlightId) {
-        this.scheduledFlightId = scheduledFlightId;
-    }
 
     public BigInteger getFlightNumber() {
         return flightNumber;
