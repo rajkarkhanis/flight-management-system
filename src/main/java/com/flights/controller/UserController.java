@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteBooking/{id}")
-    public ResponseEntity<String> deleteBooking(@PathVariable int bookingId) throws RecordNotFound {
+    public ResponseEntity<String> deleteBooking(@PathVariable("id") int bookingId) throws RecordNotFound {
         bookingService.deleteBooking(bookingId);
         String message = "Booking deleted successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);

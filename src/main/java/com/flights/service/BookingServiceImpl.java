@@ -24,6 +24,9 @@ public class BookingServiceImpl implements  BookingService{
     @Autowired
     ScheduledFlightDao scheduledFlightRepo;
 
+    @Autowired
+    ScheduledFlightService scheduledFlightService;
+
     @Override
     public Booking addBooking(Booking booking) throws Exception {
         validateBooking(booking);
@@ -96,15 +99,20 @@ public class BookingServiceImpl implements  BookingService{
     @Override
     public void validateBooking(Booking booking) throws Exception {
 
+
+
         // Validate if bookingDate is not elapsed
-        if(!booking.getBookingDate().isAfter(LocalDate.now())) {
+        if(booking.getBookingDate().isBefore(LocalDate.now())) {
             throw new InvalidDateTime("Entered booking date is a past date");
         }
 
-        // booking.getPassengerList().size() should be less than available seats in scheduled flight
+        // booking.noOfPassengers should be less than available seats in scheduled flight
         if(booking.getNoOfPassengers() > booking.getScheduledFlight().getAvailableSeats()) {
             throw new SeatNotAvailable("Passenger list exceeds available seats");
         }
+
+        // Validate scheduledFlight using scheduledFlightService
+        scheduledFlightService.validateScheduledFlight(booking.getScheduledFlight());
     }
 
     @Override
