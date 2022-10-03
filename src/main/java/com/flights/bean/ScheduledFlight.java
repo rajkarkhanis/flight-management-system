@@ -59,5 +59,4 @@ public class ScheduledFlight {
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
-
 }
