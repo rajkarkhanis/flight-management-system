@@ -27,4 +27,6 @@ public interface ScheduledFlightDao extends JpaRepository<ScheduledFlight, Integ
             "AND (date(sf.schedule.departureTime) = :date OR date(sf.schedule.arrivalTime) = :date)";
     @Query(value = query)
     List<ScheduledFlight> getScheduledFlights(@Param("source") Airport source, @Param("destination") Airport destination, @Param("date") LocalDate date);
+
+    ScheduledFlight findByScheduledFlightId(int id);
 }

@@ -4,6 +4,7 @@ import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.bean.ScheduledFlight;
 import com.flights.dao.BookingDao;
+import com.flights.dao.ScheduledFlightDao;
 import com.flights.exception.InvalidDateTime;
 import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
@@ -21,7 +22,7 @@ public class BookingServiceImpl implements  BookingService{
     BookingDao repo;
 
     @Autowired
-    ScheduledFlight scheduledFlightRepo;
+    ScheduledFlightDao scheduledFlightRepo;
 
     @Override
     public Booking addBooking(Booking booking) throws Exception {
@@ -34,6 +35,7 @@ public class BookingServiceImpl implements  BookingService{
         int currentSeatsAvailable = initialSeatsAvailable - booking.getNoOfPassengers();
         booking.getScheduledFlight().setAvailableSeats(currentSeatsAvailable);
 
+        booking.setScheduledFlight(scheduledFlightRepo.findByScheduledFlightId(booking.getScheduledFlight().getScheduledFlightId()));
         repo.save(booking);
         return booking;
     }
