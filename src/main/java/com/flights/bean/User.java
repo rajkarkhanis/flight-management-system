@@ -1,21 +1,19 @@
 package com.flights.bean;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Component
+@Data
 @Table(name="app_user")
 public class User {
 	
 	@Id
 	@GeneratedValue
 	private int userId;
-	private String userType;
+	private Role userType;
 	private String userName;
 	private String userPassword;
 	private String userPhone;
@@ -24,7 +22,11 @@ public class User {
 	public User(){}
 	public User(String userType, String userName, String userPassword, String userPhone, String userEmail) {
 		super();
-		this.userType = userType;
+		if(userType.equals("admin") || userType.equals("Admin") || userType.equals("ADMIN"))
+			this.userType = Role.ADMIN;
+		else
+			this.userType=Role.CUSTOMER;
+
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userPhone = userPhone;
@@ -40,11 +42,15 @@ public class User {
 	}
 
 	public String getUserType() {
-		return userType;
+		return userType.toString();
 	}
 
 	public void setUserType(String userType) {
-		this.userType = userType;
+		if(userType.equals("admin") || userType.equals("Admin") || userType.equals("ADMIN"))
+			this.userType = Role.ADMIN;
+		else
+			this.userType=Role.CUSTOMER;
+
 	}
 
 	public String getUserName() {

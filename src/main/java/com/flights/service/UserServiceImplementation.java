@@ -5,24 +5,39 @@ import com.flights.dao.UserDao;
 import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.regex.*;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class UserServiceImplementation implements UserService {
-    @Autowired
-    UserDao repo;
+@Service @RequiredArgsConstructor
+@Transactional
+@Slf4j
+public class UserServiceImplementation implements UserService, UserDetailsService {
 
+    @Autowired
+    UserDao userRepo;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public User addUser(User user) throws InvalidEmail, InvalidPhoneNumber {
         this.validateUser(user);
-        repo.save(user);
+        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        userRepo.save(user);
         return user;
     }
 
@@ -30,13 +45,13 @@ public class UserServiceImplementation implements UserService {
     public User viewUser(BigInteger userId) {
         Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
         int id = userId.intValue(); //convert BigInteger to integer
-        User u = repo.findById(id).orElseThrow(s);
+        User u = userRepo.findById(id).orElseThrow(s);
 		return u;
     }
 
     @Override
     public List<User> viewUser() {
-        List<User> user = repo.findAll();
+        List<User> user = userRepo.findAll();
 		return user;
     }
 
@@ -44,14 +59,14 @@ public class UserServiceImplementation implements UserService {
     public User updateUser(User user) throws InvalidEmail, InvalidPhoneNumber {
         int id = user.getUserId();
         Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
-		User u = repo.findById(id).orElseThrow(s);
+		User u = userRepo.findById(id).orElseThrow(s);
         this.validateUser(user);
 		u.setUserName(user.getUserName());
 		u.setUserEmail(user.getUserEmail());
         u.setUserPassword(user.getUserPassword());
         u.setUserType(user.getUserType());
         u.setUserPhone(user.getUserPhone());
-		repo.save(u);
+		userRepo.save(u);
 		return u;
     }
 
@@ -59,8 +74,8 @@ public class UserServiceImplementation implements UserService {
     public void deleteUser(BigInteger userId) throws RecordNotFound {
         int id = userId.intValue(); //convert BigInteger to integer
         Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
-        User u = repo.findById(id).orElseThrow(s);
-        repo.deleteById(id);
+        User u = userRepo.findById(id).orElseThrow(s);
+        userRepo.deleteById(id);
     }
 
     @Override
@@ -77,5 +92,21 @@ public class UserServiceImplementation implements UserService {
         if(m1.matches()!=true)
             throw new InvalidPhoneNumber("Phone number should contain only 10 Digits & should not start with 0");
 
+    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUserName(username);
+        if(user==null){
+            log.error("User not found");
+            throw new UsernameNotFoundException("user not found in db");
+
+        }
+        else{
+            log.info("User found:{}",username);
+
+        }
+        Collection<SimpleGrantedAuthority> authorities= new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserType()));
+        return new org.springframework.security.core.userdetails.User(user.getUserName(),user.getUserPassword(),authorities);
     }
 }
