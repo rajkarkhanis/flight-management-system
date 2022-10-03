@@ -1,6 +1,7 @@
 package com.flights.controller;
 
 import com.flights.bean.Airport;
+import com.flights.exception.RecordNotFound;
 import com.flights.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class AirportController {
     }
 
     @GetMapping("/getAirport/{id}")
-    public Optional<Airport> getAirport(@PathVariable("id") String airportCode){
+    public Airport getAirport(@PathVariable("id") String airportCode) throws RecordNotFound {
         System.out.println(airportCode);
         return airportService.viewAirport(airportCode);
     }
