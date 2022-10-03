@@ -10,4 +10,5 @@ import com.flights.bean.Flight;
 @Repository
 public interface FlightDao extends JpaRepository<Flight,BigInteger>{
 
+    Flight findByFlightNumber(BigInteger flightNumber);
 }

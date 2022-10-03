@@ -3,16 +3,21 @@ package com.flights.controller;
 import com.flights.bean.Booking;
 import com.flights.bean.Flight;
 import com.flights.bean.User;
+import com.flights.dao.ScheduledFlightDao;
+import com.flights.dao.UserDao;
+import com.flights.dto.BookingDto;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import com.flights.service.UserService;
 import lombok.RequiredArgsConstructor;
+import com.flights.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customer")
@@ -20,6 +25,15 @@ import java.util.List;
 public class UserController {
 
     private final BookingService bookingService;
+
+    @Autowired
+    private ScheduledFlightDao scheduledFlightDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private PassengerService passengerService;
 
      private final UserService userservice;
 
@@ -29,9 +43,18 @@ public class UserController {
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
     @PostMapping("/bookFlight")
-    public ResponseEntity<Booking> addNewBooking(@RequestBody Booking newBooking) throws Exception {
-        Booking b = bookingService.addBooking(newBooking);
-        return new ResponseEntity<>(b, HttpStatus.OK);
+    public ResponseEntity<Booking> addNewBooking(@RequestBody BookingDto newBooking) throws Exception {
+        // Get userId from JWT auth
+        int userId = 35;
+        Booking newBookingObj = new Booking(
+                userDao.findByUserId(userId),
+                newBooking.getBookingDate(),
+                newBooking.getPassengerList().stream().map(p -> passengerService.createPassenger(p)).collect(Collectors.toList()),
+                newBooking.getTicketCost(),
+                scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
+                newBooking.getNoOfPassengers()
+        );
+        return new ResponseEntity<>(newBookingObj, HttpStatus.OK);
     }
 
     @GetMapping("/viewBooking")
