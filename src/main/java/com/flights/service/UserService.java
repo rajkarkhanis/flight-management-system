@@ -28,4 +28,5 @@ public interface UserService {
     void validateUser(User user) throws InvalidEmail, InvalidPhoneNumber;
     //Validates the attributes of a user.
 
+    User findByUserName(String username) throws RecordNotFound;
 }
