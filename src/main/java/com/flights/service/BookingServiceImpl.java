@@ -95,7 +95,7 @@ public class BookingServiceImpl implements  BookingService{
     public void validateBooking(Booking booking) throws Exception {
 
         // Validate if bookingDate is not elapsed
-        if(!booking.getBookingDate().isAfter(LocalDate.now())) {
+        if(booking.getBookingDate().isBefore(LocalDate.now())) {
             throw new InvalidDateTime("Entered booking date is a past date");
         }
 

@@ -18,11 +18,11 @@ public class Passenger {
 	BigInteger pnrNumber; 
 	String passengerName;
 	Integer passengerAge;
-	BigInteger passengerUIN;
+	String passengerUIN;
 	Double Luggage;
 	
 	public Passenger(){};
-	public Passenger(BigInteger pnrNumber, String passengerName, Integer passengerAge, BigInteger passengerUIN,
+	public Passenger(BigInteger pnrNumber, String passengerName, Integer passengerAge, String passengerUIN,
 			Double luggage) {
 		super();
 		this.pnrNumber = pnrNumber;
@@ -49,10 +49,10 @@ public class Passenger {
 	public void setPassengerAge(Integer passengerAge) {
 		this.passengerAge = passengerAge;
 	}
-	public BigInteger getPassengerUIN() {
+	public String getPassengerUIN() {
 		return passengerUIN;
 	}
-	public void setPassengerUIN(BigInteger passengerUIN) {
+	public void setPassengerUIN(String passengerUIN) {
 		this.passengerUIN = passengerUIN;
 	}
 	public Double getLuggage() {

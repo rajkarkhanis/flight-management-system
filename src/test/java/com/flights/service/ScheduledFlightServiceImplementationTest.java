@@ -95,18 +95,19 @@ class ScheduledFlightServiceImplementationTest {
     @Test
     void viewScheduledFlightByFlightNumber() throws RecordNotFound {
         /*
-        Getting NullPointer on 108. No idea why.
+        Find List of SF by flightNumber
+        1. Get Flight by flightNumber
+        2. Get SF by Flight
+        3. Return as list
          */
-//        BigInteger flightNumber = flight.getFlightNumber();
-//
-//        flightDao.save(flight);
-//        scheduledFlightDao.save(scheduledFlight);
-//
-//        Mockito.when(flightDao.findById(flightNumber))
-//                .thenReturn(Optional.ofNullable(flight));
-//
-//        assertThat(service.viewScheduledFlights(flightNumber))
-//                .isEqualTo(List.of(scheduledFlight));
+        Mockito.when(flightDao.findById(BigInteger.valueOf(1)))
+                .thenReturn(Optional.ofNullable(flight));
+
+        Mockito.when(scheduledFlightDao.getScheduledFlightByFlight(flight))
+                .thenReturn(scheduledFlight);
+
+        assertThat(service.viewScheduledFlights(BigInteger.valueOf(1)))
+                .isEqualTo(List.of(scheduledFlight));
     }
 
     @Test
