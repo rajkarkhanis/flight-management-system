@@ -2,6 +2,7 @@ package com.flights.service;
 
 import com.flights.bean.User;
 import com.flights.dao.UserDao;
+import com.flights.dto.UserDto;
 import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
@@ -30,12 +31,18 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     private final PasswordEncoder passwordEncoder;
     @Override
-    public User addUser(User user) throws InvalidEmail, InvalidPhoneNumber {
-        this.validateUser(user);
+    public User addUser(UserDto user) throws InvalidEmail, InvalidPhoneNumber {
+        User newUser= new User();
+        newUser.setUserEmail(user.getUserEmail());
+        newUser.setUserName(user.getUserName());
+        newUser.setUserPassword(user.getUserPassword());
+        newUser.setUserPhone(user.getUserPhone());
+        newUser.setUserType(user.getUserType());
+        this.validateUser(newUser);
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         log.info("User is: {}",user);
-        userRepo.save(user);
-        return user;
+        userRepo.save(newUser);
+        return newUser;
     }
 
     @Override

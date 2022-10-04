@@ -1,6 +1,7 @@
 package com.flights.service;
 
 import com.flights.bean.User;
+import com.flights.dto.UserDto;
 import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User addUser(User user) throws InvalidEmail, InvalidPhoneNumber;
+    User addUser(UserDto user) throws InvalidEmail, InvalidPhoneNumber;
     //Adds a new user.
 
     User viewUser(BigInteger userId) throws RecordNotFound;

@@ -8,6 +8,14 @@ public class UserDto {
     private String userPassword;
     private String userPhone;
 
+    public UserDto(String userType, String userName, String userPassword, String userPhone, String userEmail) {
+        this.userType = userType;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userPhone = userPhone;
+        this.userEmail = userEmail;
+    }
+
     public int getUserId() {
         return userId;
     }

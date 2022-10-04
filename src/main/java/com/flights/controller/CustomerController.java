@@ -2,6 +2,7 @@ package com.flights.controller;
 
 import com.flights.bean.*;
 import com.flights.dto.BookingDto;
+import com.flights.dto.UserDto;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import com.flights.service.ScheduledFlightService;
@@ -30,7 +31,7 @@ public class CustomerController {
 
 //     CREATE A NEW USER
     @PostMapping("adduser")
-    public ResponseEntity<User> addUser(@RequestBody User user) throws Throwable{
+    public ResponseEntity<User> addUser(@RequestBody UserDto user) throws Throwable{
         User newUser = userservice.addUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
@@ -41,7 +42,7 @@ public class CustomerController {
        Booking newBookingObj = bookingService.addBooking(newBooking,bearerToken);
         return new ResponseEntity<>(newBookingObj, HttpStatus.OK);
     }
-    
+
     @GetMapping("/viewBooking")
     public ResponseEntity<List<Booking>> viewBookingByUsername(@RequestHeader("Authorization") String bearerToken) throws RecordNotFound{
         String username= CustomTokenParser.parseJwt(bearerToken);
