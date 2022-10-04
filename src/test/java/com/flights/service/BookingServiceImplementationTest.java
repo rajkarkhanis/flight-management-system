@@ -3,6 +3,7 @@ package com.flights.service;
 import com.flights.bean.*;
 import com.flights.dao.BookingDao;
 import com.flights.dao.ScheduledFlightDao;
+import com.flights.exception.RecordNotFound;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -141,6 +142,12 @@ class BookingServiceImplementationTest {
 
     }
 
+    @Test
+    void testviewBooking() throws RecordNotFound {
+        Optional<Booking> b = Optional.of(booking);
+        Mockito.when(bookingDao.findById(1)).thenReturn(b);
+        assertThat(bookingService.viewBooking(1)).isEqualTo(booking);
+    }
     @Test
     void deleteBooking() {
         Mockito.when(bookingDao.existsById(1)).thenReturn(false);
