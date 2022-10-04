@@ -3,6 +3,7 @@ package com.flights.service;
 import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.bean.ScheduledFlight;
+import com.flights.bean.User;
 import com.flights.dao.BookingDao;
 import com.flights.dao.ScheduledFlightDao;
 import com.flights.dto.BookingDto;
@@ -12,7 +13,6 @@ import com.flights.exception.RecordNotFound;
 import com.flights.exception.SeatNotAvailable;
 import com.flights.utils.CustomTokenParser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,24 +25,21 @@ public class BookingServiceImpl implements  BookingService{
     private final BookingDao repo;
     private final ScheduledFlightDao scheduledFlightRepo;
     private final UserService userService;
-    private final ScheduledFlightService scheduledFlightService;
     private final PassengerService passengerService;
     private final ScheduledFlightDao scheduledFlightDao;
     @Override
-    public Booking addBooking(BookingDto newBooking,String bearerToken) throws Exception {
+    public Booking addBooking(BookingDto newBooking,String bearerToken) throws RecordNotFound,InvalidDateTime,SeatNotAvailable,InvalidPassengerUIN  {
         if(scheduledFlightDao.findByScheduledFlightId(newBooking.getScheduledFlightId()) == null)
-            throw new RecordNotFound("Entered ScheduledFlight object does not exist");
+            throw new RecordNotFound(ScheduledFlight.class.toString());
         String username = CustomTokenParser.parseJwt(bearerToken);
         Booking booking = new Booking(
                 userService.findByUserName(username),
                 LocalDate.now(),
                 newBooking.getPassengerList().stream().map(passengerService::createPassenger).collect(Collectors.toList()),
                 newBooking.getTicketCost(),
-                scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
+                scheduledFlightDao.findByScheduledFlightId(newBooking.getScheduledFlightId()),
                 newBooking.getPassengerList().size()
         );
-
-
 
         validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
@@ -62,8 +59,8 @@ public class BookingServiceImpl implements  BookingService{
     public Booking modifyBooking(Booking booking) throws Exception {
         int id = booking.getBookingId();
 
-        if(repo.findById(id) == null)
-            throw new RecordNotFound("Booking object does not exist");
+        if(repo.findById(id).isEmpty())
+            throw new RecordNotFound(Booking.class.toString());
 
         validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
@@ -83,23 +80,29 @@ public class BookingServiceImpl implements  BookingService{
 
     @Override
     public Booking viewBooking(int bookingId) throws RecordNotFound {
-        if(repo.findById(bookingId) == null)
-            throw new RecordNotFound("Booking object does not exist");
+        if(repo.findById(bookingId).isEmpty())
+            throw new RecordNotFound(Booking.class.toString());
 
-        Booking b = repo.findById(bookingId).orElseThrow();
-        return b;
+       return repo.findById(bookingId).orElseThrow();
+
     }
 
     @Override
     public List<Booking> viewBooking() {
-        List<Booking> list = repo.findAll();
-        return list;
+        return repo.findAll();
+
+    }
+
+    @Override
+    public List<Booking> viewBookingsForUser(String username) throws RecordNotFound {
+       User user = userService.findByUserName(username);
+       return repo.findByUserId(user);
     }
 
     @Override
     public void deleteBooking(int bookingId) throws RecordNotFound {
-        if(repo.findById(bookingId) == null)
-            throw new RecordNotFound("Booking object does not exist");
+        if(repo.findById(bookingId).isEmpty())
+            throw new RecordNotFound(Booking.class.toString());
 
         Booking booking = repo.findById(bookingId).orElseThrow();
 
@@ -112,9 +115,7 @@ public class BookingServiceImpl implements  BookingService{
     }
 
     @Override
-    public void validateBooking(Booking booking) throws Exception {
-
-
+    public void validateBooking(Booking booking) throws InvalidDateTime,SeatNotAvailable {
 
         // Validate if bookingDate is not elapsed
         if(booking.getBookingDate().isBefore(LocalDate.now())) {

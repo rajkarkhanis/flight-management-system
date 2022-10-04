@@ -1,21 +1,14 @@
 package com.flights.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.flights.bean.*;
-import com.flights.dao.ScheduledFlightDao;
-import com.flights.dao.UserDao;
 import com.flights.dto.BookingDto;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import com.flights.service.ScheduledFlightService;
 import com.flights.service.UserService;
 import com.flights.utils.AirportDateWrapper;
+import com.flights.utils.CustomTokenParser;
 import lombok.RequiredArgsConstructor;
-import com.flights.service.PassengerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/customer")
@@ -48,11 +41,11 @@ public class CustomerController {
        Booking newBookingObj = bookingService.addBooking(newBooking,bearerToken);
         return new ResponseEntity<>(newBookingObj, HttpStatus.OK);
     }
-
-    //TODO: make it specific for user
+    
     @GetMapping("/viewBooking")
-    public ResponseEntity<List<Booking>> getAllBookings() {
-        List<Booking> bookingList = bookingService.viewBooking();
+    public ResponseEntity<List<Booking>> viewBookingByUsername(@RequestHeader("Authorization") String bearerToken) throws RecordNotFound{
+        String username= CustomTokenParser.parseJwt(bearerToken);
+        List<Booking> bookingList = bookingService.viewBookingsForUser(username);
         return new ResponseEntity<>(bookingList, HttpStatus.OK);
     }
 

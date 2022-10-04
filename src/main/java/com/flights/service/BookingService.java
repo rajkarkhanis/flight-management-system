@@ -25,6 +25,8 @@ public interface BookingService {
     // Retrieves a list of all the bookings made.
     public List<Booking> viewBooking();
 
+    List<Booking> viewBookingsForUser(String username) throws RecordNotFound;
+
     // Deletes a previous booking identifiable by the ‘bookingId’
     public void deleteBooking(int bookingId) throws RecordNotFound;
 

@@ -1,19 +1,15 @@
 package com.flights.controller;
 
 import com.flights.bean.Booking;
-import com.flights.bean.Passenger;
 import com.flights.dao.ScheduledFlightDao;
 import com.flights.dao.UserDao;
 import com.flights.dto.BookingDto;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import com.flights.service.PassengerService;
-import com.flights.service.PassengerServiceImpl;
-import com.flights.service.ScheduledFlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +42,7 @@ public class BookingController {
                 scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
                 newBooking.getPassengerList().size()
         );
-        bookingService.addBooking(newBookingObj);
+//        bookingService.addBooking(newBookingObj);
         return newBookingObj;
     }
 
