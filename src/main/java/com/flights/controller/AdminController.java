@@ -103,6 +103,7 @@ public class AdminController {
                 scheduledFlightDto.getAvailableSeats(),
                 scheduleDao.findByScheduleId(scheduledFlightDto.getScheduleId())
         );
+        scheduledFlightService.scheduleFlight(newScheduledFlight);
         return new ResponseEntity<>(newScheduledFlight, HttpStatus.OK);
     }
 

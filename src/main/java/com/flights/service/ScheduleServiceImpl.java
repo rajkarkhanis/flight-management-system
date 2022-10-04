@@ -27,6 +27,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 scheduleDto.getArrivalTime(),
                 scheduleDto.getDepartureTime()
         );
+        scheduleDao.save(newSchedule);
         return newSchedule;
     }
 
@@ -39,7 +40,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public Schedule viewSchedule(int scheduleId) throws RecordNotFound {
         if(scheduleDao.findByScheduleId(scheduleId) == null)
-            throw new RecordNotFound("Booking object does not exist");
+            throw new RecordNotFound("Schedule object does not exist");
 
         Schedule schedule = scheduleDao.findById(scheduleId).orElseThrow();
         return schedule;
