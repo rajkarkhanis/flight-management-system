@@ -30,16 +30,16 @@ public class BookingServiceImpl implements  BookingService{
     private final ScheduledFlightDao scheduledFlightDao;
     @Override
     public Booking addBooking(BookingDto newBooking,String bearerToken) throws Exception {
-
-    String username = CustomTokenParser.parseJwt(bearerToken);
-
+        if(scheduledFlightDao.findByScheduledFlightId(newBooking.getScheduledFlightId()) == null)
+            throw new RecordNotFound("Entered ScheduledFlight object does not exist");
+        String username = CustomTokenParser.parseJwt(bearerToken);
         Booking booking = new Booking(
                 userService.findByUserName(username),
-                newBooking.getBookingDate(),
+                LocalDate.now(),
                 newBooking.getPassengerList().stream().map(passengerService::createPassenger).collect(Collectors.toList()),
                 newBooking.getTicketCost(),
                 scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
-                newBooking.getNoOfPassengers()
+                newBooking.getPassengerList().size()
         );
 
 
