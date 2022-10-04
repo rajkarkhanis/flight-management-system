@@ -1,9 +1,7 @@
 package com.flights.service;
 
-import com.flights.bean.Booking;
 import com.flights.bean.Schedule;
 import com.flights.dao.AirportDao;
-import com.flights.dao.BookingDao;
 import com.flights.dao.ScheduleDao;
 import com.flights.dto.ScheduleDto;
 import com.flights.exception.RecordNotFound;
@@ -27,13 +25,14 @@ public class ScheduleServiceImpl implements ScheduleService{
                 scheduleDto.getArrivalTime(),
                 scheduleDto.getDepartureTime()
         );
+        scheduleDao.save(newSchedule);
         return newSchedule;
     }
 
     @Override
     public List<Schedule> viewSchedule() {
-        List<Schedule> list = scheduleDao.findAll();
-        return list;
+       return scheduleDao.findAll();
+
     }
 
     @Override
@@ -41,7 +40,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         if(scheduleDao.findByScheduleId(scheduleId) == null)
             throw new RecordNotFound("Booking object does not exist");
 
-        Schedule schedule = scheduleDao.findById(scheduleId).orElseThrow();
-        return schedule;
+     return scheduleDao.findById(scheduleId).orElseThrow();
+
     }
 }
