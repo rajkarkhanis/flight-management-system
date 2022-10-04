@@ -87,7 +87,9 @@ public class Booking {
 		this.noOfPassengers = noOfPassengers;
 	}
 	private Integer noOfPassengers;
-	
-	
-	
+
+
+    public void setBookingId(int i) {
+		bookingId = i;
+    }
 }
