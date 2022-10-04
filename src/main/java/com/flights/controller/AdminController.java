@@ -1,9 +1,6 @@
 package com.flights.controller;
 
-import com.flights.bean.Airport;
-import com.flights.bean.Flight;
-import com.flights.bean.Schedule;
-import com.flights.bean.ScheduledFlight;
+import com.flights.bean.*;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduleDao;
 import com.flights.dao.ScheduledFlightDao;
@@ -14,8 +11,10 @@ import com.flights.exception.RecordNotFound;
 import com.flights.service.FlightService;
 import com.flights.service.ScheduleService;
 import com.flights.service.ScheduledFlightService;
+import com.flights.service.UserService;
 import com.flights.utils.AirportDateWrapper;
 import com.flights.utils.FlightScheduleWrapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,21 +26,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/admin")
+@RequiredArgsConstructor
 public class AdminController {
-    @Autowired
-    FlightService flightService;
 
-    @Autowired
-    ScheduledFlightService scheduledFlightService;
+    private final FlightService flightService;
 
-    @Autowired
-    FlightDao flightDao;
+    private final ScheduledFlightService scheduledFlightService;
 
-    @Autowired
-    ScheduleDao scheduleDao;
+    private final FlightDao flightDao;
 
-    @Autowired
-    ScheduleService scheduleService;
+    private final ScheduleDao scheduleDao;
+
+    private final ScheduleService scheduleService;
 
     @PostMapping(value = "/addFlight")
     public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
@@ -142,5 +138,30 @@ public class AdminController {
         scheduledFlightService.deleteScheduledFlight(flightNumber);
         String message = "ScheduledFlight Deleted Successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+
+//    USER
+    private final UserService userService;
+@GetMapping("getuser/{id}")
+public User viewUser(@PathVariable("id") int userId) throws RecordNotFound {
+    BigInteger bi = BigInteger.valueOf(userId);
+  return userService.viewUser(bi);
+
+}
+
+    @GetMapping("getallusers")
+    public List<User> viewUser() {
+        return userService.viewUser();
+    }
+    @PutMapping("updateuser")
+    public User updateUser(@RequestBody User user) throws Throwable {
+        return userService.updateUser(user);
+    }
+
+    @DeleteMapping("deleteuser/{id}")
+    public void deleteUser(@PathVariable("id") int userId) throws RecordNotFound{
+        BigInteger bi = BigInteger.valueOf(userId);
+        userService.deleteUser(bi);
     }
 }
