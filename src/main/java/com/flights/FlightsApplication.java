@@ -1,6 +1,9 @@
 package com.flights;
 
 import com.flights.bean.User;
+import com.flights.dto.AirportDto;
+import com.flights.dto.UserDto;
+import com.flights.service.AirportService;
 import com.flights.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -43,11 +46,16 @@ public class FlightsApplication {
 		return new BCryptPasswordEncoder();
 	}
 	@Bean
-	CommandLineRunner run(UserService userService){
+	CommandLineRunner run(UserService userService, AirportService airportService){
 		return args->
 		{
-			userService.addUser(new User("admin","boss","123","1234567890","boss@mail.com" ));
-			userService.addUser(new User("customer","sid","123","1234567890","sid@mail.com" ));
+			userService.addUser(new UserDto("admin","boss","123","1234567890","boss@mail.com" ));
+			userService.addUser(new UserDto("customer","sid","123","1234567890","sid@mail.com" ));
+			airportService.addAirport(new AirportDto("BOM","Chhatrapati Shivaji Maharaj International Airport","Mumbai"));
+			airportService.addAirport(new AirportDto("MAA","Madras Airport","Chennai"));
+			airportService.addAirport(new AirportDto("DEL","Indira Gandhi International Airport","Delhi"));
+			airportService.addAirport(new AirportDto("GOI","Goa International Airport","Goa"));
+			airportService.addAirport(new AirportDto("CCU","Netaji Subhash Chandra Bose International","Kolkata"));
 		};
 	}
 }

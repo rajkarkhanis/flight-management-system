@@ -1,16 +1,15 @@
 package com.flights.bean;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
-@Component
 @Entity
 @Table
 public class Airport {
 	
 	@Id
-	@Column(name="id",unique = true,nullable = false)
+	@GeneratedValue
+	private Integer airportId;
+	@Column(unique = true)
 	private String airportCode; // BOM, DEL, 
 	private String airportName;
 	private String airportLocation;
@@ -41,9 +40,10 @@ public class Airport {
 	public void setAirportLocation(String airportLocation) {
 		this.airportLocation = airportLocation;
 	}
+	public Integer getAirportId(){return this.airportId;}
 	@Override
 	public String toString() {
-		return "Airport [ airportCode=" + airportCode + ", airportName=" + airportName
+		return "Airport [ airportId= "+airportId+" airportCode=" + airportCode + ", airportName=" + airportName
 				+ ", airportLocation=" + airportLocation + "]";
 	}
 	

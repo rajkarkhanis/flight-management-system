@@ -2,6 +2,7 @@ package com.flights.service;
 
 import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
+import com.flights.dto.BookingDto;
 import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public interface BookingService {
 
     // Creates a new booking
-    public Booking addBooking(Booking booking) throws Exception;
+    public Booking addBooking(BookingDto booking, String bearerToken) throws Exception;
 
     // Modifies a previous booking.
     public Booking modifyBooking(Booking booking) throws Exception;
@@ -23,6 +24,8 @@ public interface BookingService {
 
     // Retrieves a list of all the bookings made.
     public List<Booking> viewBooking();
+
+    List<Booking> viewBookingsForUser(String username) throws RecordNotFound;
 
     // Deletes a previous booking identifiable by the ‘bookingId’
     public void deleteBooking(int bookingId) throws RecordNotFound;

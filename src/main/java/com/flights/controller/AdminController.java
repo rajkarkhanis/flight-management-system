@@ -4,9 +4,15 @@ import com.flights.bean.Airport;
 import com.flights.bean.Flight;
 import com.flights.bean.Schedule;
 import com.flights.bean.ScheduledFlight;
+import com.flights.dao.FlightDao;
+import com.flights.dao.ScheduleDao;
+import com.flights.dao.ScheduledFlightDao;
+import com.flights.dto.ScheduleDto;
+import com.flights.dto.ScheduledFlightDto;
 import com.flights.exception.*;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.FlightService;
+import com.flights.service.ScheduleService;
 import com.flights.service.ScheduledFlightService;
 import com.flights.utils.AirportDateWrapper;
 import com.flights.utils.FlightScheduleWrapper;
@@ -27,6 +33,15 @@ public class AdminController {
 
     @Autowired
     ScheduledFlightService scheduledFlightService;
+
+    @Autowired
+    FlightDao flightDao;
+
+    @Autowired
+    ScheduleDao scheduleDao;
+
+    @Autowired
+    ScheduleService scheduleService;
 
     @PostMapping(value = "/addFlight")
     public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
@@ -59,10 +74,37 @@ public class AdminController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+//    Add Schedule
+    @PostMapping(value = "/addSchedule")
+    public ResponseEntity<Schedule> addFlight(@RequestBody ScheduleDto scheduleDto) throws InvalidDataEntry, RecordAlreadyExists {
+        Schedule newSchedule = scheduleService.addSchedule(scheduleDto);
+        return new ResponseEntity<>(newSchedule, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/viewSchedules")
+    public ResponseEntity<List<Schedule>> viewSchedule() {
+        List<Schedule> scheduleList = scheduleService.viewSchedule();
+        return new ResponseEntity<>(scheduleList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/viewSchedule/{scheduleId}")
+    public ResponseEntity<Schedule> viewFlight(@PathVariable int scheduleId) throws RecordNotFound {
+        Schedule schedule = scheduleService.viewSchedule(scheduleId);
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
+    }
+
+    // Optional: Add modifySchedule & deleteSchedule
+
     @PostMapping(value = "/scheduleFlight")
-    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
-        ScheduledFlight addedFlight = scheduledFlightService.scheduleFlight(scheduledFlight);
-        return new ResponseEntity<>(addedFlight, HttpStatus.OK);
+    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlightDto scheduledFlightDto) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
+
+        ScheduledFlight newScheduledFlight = new ScheduledFlight(
+                flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber()),
+                scheduledFlightDto.getAvailableSeats(),
+                scheduleDao.findByScheduleId(scheduledFlightDto.getScheduleId())
+        );
+        scheduledFlightService.scheduleFlight(newScheduledFlight);
+        return new ResponseEntity<>(newScheduledFlight, HttpStatus.OK);
     }
 
     @GetMapping(value = "/viewScheduledFlightsOnDate")

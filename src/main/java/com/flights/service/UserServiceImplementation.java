@@ -2,12 +2,12 @@ package com.flights.service;
 
 import com.flights.bean.User;
 import com.flights.dao.UserDao;
+import com.flights.dto.UserDto;
 import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,44 +27,49 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class UserServiceImplementation implements UserService, UserDetailsService {
-    @Autowired
-    UserDao repo;
+    private final UserDao userRepo;
 
     private final PasswordEncoder passwordEncoder;
     @Override
-    public User addUser(User user) throws InvalidEmail, InvalidPhoneNumber {
-        this.validateUser(user);
+    public User addUser(UserDto user) throws InvalidEmail, InvalidPhoneNumber {
+        User newUser= new User();
+        newUser.setUserEmail(user.getUserEmail());
+        newUser.setUserName(user.getUserName());
+        newUser.setUserPassword(user.getUserPassword());
+        newUser.setUserPhone(user.getUserPhone());
+        newUser.setUserType(user.getUserType());
+        this.validateUser(newUser);
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
-        repo.save(user);
-        return user;
+        log.info("User is: {}",user);
+        userRepo.save(newUser);
+        return newUser;
     }
 
     @Override
     public User viewUser(BigInteger userId) {
         Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
         int id = userId.intValue(); //convert BigInteger to integer
-        User u = repo.findById(id).orElseThrow(s);
-		return u;
+        return userRepo.findById(id).orElseThrow(s);
     }
 
     @Override
     public List<User> viewUser() {
-        List<User> user = repo.findAll();
-		return user;
+      return userRepo.findAll();
+
     }
 
     @Override
     public User updateUser(User user) throws InvalidEmail, InvalidPhoneNumber {
         int id = user.getUserId();
         Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
-        User u = repo.findById(id).orElseThrow(s);
+        User u = userRepo.findById(id).orElseThrow(s);
         this.validateUser(user);
         u.setUserName(user.getUserName());
         u.setUserEmail(user.getUserEmail());
         u.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         u.setUserType(user.getUserType());
         u.setUserPhone(user.getUserPhone());
-        repo.save(u);
+        userRepo.save(u);
         return u;
     }
 
@@ -72,8 +77,8 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     public void deleteUser(BigInteger userId) throws RecordNotFound {
         int id = userId.intValue(); //convert BigInteger to integer
         Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
-        User u = repo.findById(id).orElseThrow(s);
-        repo.deleteById(id);
+        userRepo.findById(id).orElseThrow(s);
+        userRepo.deleteById(id);
     }
 
     @Override
@@ -91,13 +96,18 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
             throw new InvalidPhoneNumber("Phone number should contain only 10 Digits & should not start with 0");
 
     }
+
+    @Override
+    public User findByUserName(String username) throws RecordNotFound {
+        return userRepo.findByUserName(username);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repo.findByUserName(username);
+        User user = userRepo.findByUserName(username);
         if(user==null){
             log.error("User not found");
             throw new UsernameNotFoundException("user not found in db");
-
         }
         else{
             log.info("User found:{}",username);

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Entity
 @Component
@@ -13,10 +12,10 @@ public class Schedule {
     @Id @GeneratedValue
     private int scheduleId;
 
-    @OneToOne
+    @ManyToOne
     private Airport sourceAirport;
 
-    @OneToOne
+    @ManyToOne
     private Airport destinationAirport;
 
     @Column(columnDefinition = "TIMESTAMP")
