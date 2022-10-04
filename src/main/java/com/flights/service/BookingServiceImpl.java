@@ -5,30 +5,45 @@ import com.flights.bean.Passenger;
 import com.flights.bean.ScheduledFlight;
 import com.flights.dao.BookingDao;
 import com.flights.dao.ScheduledFlightDao;
+import com.flights.dto.BookingDto;
 import com.flights.exception.InvalidDateTime;
 import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
 import com.flights.exception.SeatNotAvailable;
+import com.flights.utils.CustomTokenParser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Service
+@Service @RequiredArgsConstructor
 public class BookingServiceImpl implements  BookingService{
 
-    @Autowired
-    BookingDao repo;
-
-    @Autowired
-    ScheduledFlightDao scheduledFlightRepo;
-
-    @Autowired
-    ScheduledFlightService scheduledFlightService;
-
+    private final BookingDao repo;
+    private final ScheduledFlightDao scheduledFlightRepo;
+    private final UserService userService;
+    private final ScheduledFlightService scheduledFlightService;
+    private final PassengerService passengerService;
+    private final ScheduledFlightDao scheduledFlightDao;
     @Override
-    public Booking addBooking(Booking booking) throws Exception {
+    public Booking addBooking(BookingDto newBooking,String bearerToken) throws Exception {
+
+    String username = CustomTokenParser.parseJwt(bearerToken);
+
+        Booking booking = new Booking(
+                userService.findByUserName(username),
+                newBooking.getBookingDate(),
+                newBooking.getPassengerList().stream().map(passengerService::createPassenger).collect(Collectors.toList()),
+                newBooking.getTicketCost(),
+                scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
+                newBooking.getNoOfPassengers()
+        );
+
+
+
         validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
             validatePassenger(p);

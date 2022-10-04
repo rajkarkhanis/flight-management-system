@@ -1,5 +1,9 @@
 package com.flights.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.dao.ScheduledFlightDao;
@@ -34,20 +38,8 @@ public class BookingController {
     private PassengerService passengerService;
 
     @PostMapping("/addBooking")
-    public Booking addNewBooking(@RequestBody BookingDto newBooking) throws Exception {
-
-        // Get userId from JWT auth
-        int userId = 35;
-        Booking newBookingObj = new Booking(
-            userDao.findByUserId(userId),
-                newBooking.getBookingDate(),
-                newBooking.getPassengerList().stream().map(p -> passengerService.createPassenger(p)).collect(Collectors.toList()),
-                newBooking.getTicketCost(),
-                scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
-                newBooking.getNoOfPassengers()
-        );
-        bookingService.addBooking(newBookingObj);
-        return newBookingObj;
+    public Booking addNewBooking(@RequestBody BookingDto newBooking,@RequestHeader("Authorization") String bearerToken) throws Exception {
+       return  bookingService.addBooking(newBooking,bearerToken);
     }
 
     @PutMapping("/updateBooking")
