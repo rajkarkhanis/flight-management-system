@@ -38,7 +38,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public Schedule viewSchedule(int scheduleId) throws RecordNotFound {
         if(scheduleDao.findByScheduleId(scheduleId) == null)
-            throw new RecordNotFound("Booking object does not exist");
+            throw new RecordNotFound("Schedule object does not exist");
 
      return scheduleDao.findById(scheduleId).orElseThrow();
 

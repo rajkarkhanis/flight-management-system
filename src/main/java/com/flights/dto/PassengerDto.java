@@ -8,7 +8,7 @@ public class PassengerDto {
     private BigInteger pnrNumber;
     private String passengerName;
     private Integer passengerAge;
-    private BigInteger passengerUIN;
+    private String passengerUIN;
     private Double luggage;
 
     public int getPassengerId() {
@@ -43,11 +43,11 @@ public class PassengerDto {
         this.passengerAge = passengerAge;
     }
 
-    public BigInteger getPassengerUIN() {
+    public String getPassengerUIN() {
         return passengerUIN;
     }
 
-    public void setPassengerUIN(BigInteger passengerUIN) {
+    public void setPassengerUIN(String passengerUIN) {
         this.passengerUIN = passengerUIN;
     }
 
