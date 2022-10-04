@@ -95,11 +95,11 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
             throw new InvalidDateTime("Departure date & time has elapsed");
         }
 
-        if (!airportDao.existsById(schedule.getSourceAirport().getAirportCode())) {
+        if (!airportDao.existsByAirportCode(schedule.getSourceAirport().getAirportCode())) {
             throw new InvalidAirport("Source Airport is not present in the database");
         }
 
-        if (!airportDao.existsById(schedule.getDestinationAirport().getAirportCode())) {
+        if (!airportDao.existsByAirportCode(schedule.getDestinationAirport().getAirportCode())) {
             throw new InvalidAirport("Destination Airport is not present in the database");
         }
     }

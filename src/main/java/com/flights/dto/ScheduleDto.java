@@ -3,20 +3,15 @@ package com.flights.dto;
 import java.time.LocalDateTime;
 
 public class ScheduleDto {
-
+    private int scheduleId;
     private String sourceAirportCode;
     private String destinationAirportCode;
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
 
-//    public int getScheduleId() {
-//        return scheduleId;
-//    }
-//
-//    public void setScheduleId(int scheduleId) {
-//        this.scheduleId = scheduleId;
-//    }
-
+    public int getScheduleId() {
+        return scheduleId;
+    }
     public String getSourceAirportCode() {
         return sourceAirportCode;
     }

@@ -8,7 +8,7 @@ public class Airport {
 	
 	@Id
 	@GeneratedValue
-	private int airportId;
+	private Integer airportId;
 	@Column(unique = true)
 	private String airportCode; // BOM, DEL, 
 	private String airportName;
@@ -40,7 +40,7 @@ public class Airport {
 	public void setAirportLocation(String airportLocation) {
 		this.airportLocation = airportLocation;
 	}
-	public int getAirportId(){return this.airportId;}
+	public Integer getAirportId(){return this.airportId;}
 	@Override
 	public String toString() {
 		return "Airport [ airportId= "+airportId+" airportCode=" + airportCode + ", airportName=" + airportName
