@@ -111,15 +111,15 @@ public class BookingServiceImpl implements  BookingService{
             throw new SeatNotAvailable("Passenger list exceeds available seats");
         }
 
-        // Validate scheduledFlight using scheduledFlightService
-        scheduledFlightService.validateScheduledFlight(booking.getScheduledFlight());
     }
 
     @Override
     public void validatePassenger(Passenger passenger) throws InvalidPassengerUIN {
+
         // Validate if passengerUIN is of 12 digits
-        if (passenger.getPassengerUIN().toString().length() != 12) {
+        if (passenger.getPassengerUIN().length() != 12) {
             throw new InvalidPassengerUIN("UIN is not 12 digits");
         }
+
     }
 }

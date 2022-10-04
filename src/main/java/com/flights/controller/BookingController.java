@@ -44,7 +44,7 @@ public class BookingController {
                 newBooking.getPassengerList().stream().map(p -> passengerService.createPassenger(p)).collect(Collectors.toList()),
                 newBooking.getTicketCost(),
                 scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
-                newBooking.getNoOfPassengers()
+                newBooking.getPassengerList().size()
         );
         bookingService.addBooking(newBookingObj);
         return newBookingObj;

@@ -16,7 +16,6 @@ public class BookingDto {
     private List<PassengerDto> passengerList;
     private Double ticketCost;
     private int scheduledFlightId;
-    private Integer noOfPassengers;
 
 //    public int getBookingId() {
 //        return bookingId;
@@ -58,11 +57,4 @@ public class BookingDto {
         this.scheduledFlightId = scheduledFlightId;
     }
 
-    public Integer getNoOfPassengers() {
-        return noOfPassengers;
-    }
-
-    public void setNoOfPassengers(Integer noOfPassengers) {
-        this.noOfPassengers = noOfPassengers;
-    }
 }

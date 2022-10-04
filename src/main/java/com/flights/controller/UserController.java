@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,13 +47,17 @@ public class UserController {
     public ResponseEntity<Booking> addNewBooking(@RequestBody BookingDto newBooking) throws Exception {
         // Get userId from JWT auth
         int userId = 35;
+
+        if(scheduledFlightDao.findByScheduledFlightId(newBooking.getScheduledFlightId()) == null)
+            throw new RecordNotFound("Entered ScheduledFlight object does not exist");
+
         Booking newBookingObj = new Booking(
                 userDao.findByUserId(userId),
-                newBooking.getBookingDate(),
+                LocalDate.now(),
                 newBooking.getPassengerList().stream().map(p -> passengerService.createPassenger(p)).collect(Collectors.toList()),
                 newBooking.getTicketCost(),
                 scheduledFlightDao.findById(newBooking.getScheduledFlightId()).orElseThrow(),
-                newBooking.getNoOfPassengers()
+                newBooking.getPassengerList().size()
         );
         bookingService.addBooking(newBookingObj);
         return new ResponseEntity<>(newBookingObj, HttpStatus.OK);
