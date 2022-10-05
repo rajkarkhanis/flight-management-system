@@ -12,8 +12,10 @@ import com.flights.utils.CustomTokenParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +33,7 @@ public class CustomerController {
 
 //     CREATE A NEW USER
     @PostMapping("adduser")
-    public ResponseEntity<User> addUser(@RequestBody UserDto user) throws Throwable{
+    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto user) throws Throwable{
         User newUser = userservice.addUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
@@ -86,6 +88,5 @@ public class CustomerController {
         return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
     }
 //TODO: view all flights
-    //TODO:
 
 }

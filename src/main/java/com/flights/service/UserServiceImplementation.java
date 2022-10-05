@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Supplier;
 import java.util.regex.*;
 import java.math.BigInteger;
 import java.util.List;
@@ -39,17 +38,16 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         newUser.setUserPhone(user.getUserPhone());
         newUser.setUserType(user.getUserType());
         this.validateUser(newUser);
-        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        newUser.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         log.info("User is: {}",user);
         userRepo.save(newUser);
         return newUser;
     }
 
     @Override
-    public User viewUser(BigInteger userId) {
-        Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
+    public User viewUser(BigInteger userId) throws RecordNotFound{
         int id = userId.intValue(); //convert BigInteger to integer
-        return userRepo.findById(id).orElseThrow(s);
+        return userRepo.findById(id).orElseThrow( ()->new RecordNotFound(User.class.toString()));
     }
 
     @Override
@@ -59,10 +57,9 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User updateUser(User user) throws InvalidEmail, InvalidPhoneNumber {
+    public User updateUser(User user) throws InvalidEmail, InvalidPhoneNumber,RecordNotFound {
         int id = user.getUserId();
-        Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
-        User u = userRepo.findById(id).orElseThrow(s);
+        User u = userRepo.findById(id).orElseThrow(()->new RecordNotFound(User.class.toString()));
         this.validateUser(user);
         u.setUserName(user.getUserName());
         u.setUserEmail(user.getUserEmail());
@@ -76,29 +73,23 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public void deleteUser(BigInteger userId) throws RecordNotFound {
         int id = userId.intValue(); //convert BigInteger to integer
-        Supplier s= ()->new RecordNotFound("User doesn't exist in the database");
-        userRepo.findById(id).orElseThrow(s);
+        userRepo.findById(id).orElseThrow(()->new RecordNotFound(User.class.toString()));
         userRepo.deleteById(id);
     }
 
     @Override
-    public void validateUser(User user) throws InvalidEmail,InvalidPhoneNumber {
-        String regex_email = "[a-zA-Z_][a-zA-Z0-9_]*@[a-zA-Z]+[.][a-zA-Z]+";
-        Pattern p = Pattern.compile(regex_email);
-        Matcher m = p.matcher(user.getUserEmail());
-        if(m.matches()!=true)
-            throw new InvalidEmail("Invalid Email-Id");
+    public void validateUser(User user) throws InvalidPhoneNumber {
 
-        String regex_phone = "[1-9][0-9]{9}";
-        Pattern p1 = Pattern.compile(regex_phone);
+        String regexPhone = "[1-9][\\d]{9}";
+        Pattern p1 = Pattern.compile(regexPhone);
         Matcher m1 = p1.matcher(user.getUserPhone());
-        if(m1.matches()!=true)
+        if(!m1.matches())
             throw new InvalidPhoneNumber("Phone number should contain only 10 Digits & should not start with 0");
 
     }
 
     @Override
-    public User findByUserName(String username) throws RecordNotFound {
+    public User findByUserName(String username) {
         return userRepo.findByUserName(username);
     }
 
