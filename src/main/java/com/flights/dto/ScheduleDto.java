@@ -1,17 +1,27 @@
 package com.flights.dto;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class ScheduleDto {
-    private int scheduleId;
+
+    @NotBlank(message = "Source Airport cannot be empty")
+    @Size(message = "Source airport must have 3 characters",min=3,max=3)
     private String sourceAirportCode;
+    @NotBlank(message = "Destination Airport cannot be empty")
+    @Size(message = "Destination airport must have 3 characters",min=3,max=3)
     private String destinationAirportCode;
+    @NotNull(message = "arrival Time cannot be null")
+    @Future(message = "Arrival date time should be a Future Date Time ")
     private LocalDateTime arrivalTime;
+    @NotNull(message = "Departure Time cannot be null")
+    @Future(message = "Departure date time should be a Future Date Time ")
     private LocalDateTime departureTime;
 
-    public int getScheduleId() {
-        return scheduleId;
-    }
+
     public String getSourceAirportCode() {
         return sourceAirportCode;
     }
