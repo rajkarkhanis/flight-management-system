@@ -2,11 +2,20 @@ package com.flights.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 @Data
 public class AirportDto {
 
+    @NotEmpty(message = "Airport code cannot be empty")
+    @Size(message = "Airport code must be three characters", min = 3, max = 3)
     private String airportCode; // BOM, DEL,
+
+    @NotEmpty(message = "Airport name cannot be empty")
     private String airportName;
+
+    @NotEmpty(message = "Airport location cannot be empty")
     private String airportLocation;
 
     public AirportDto() {
