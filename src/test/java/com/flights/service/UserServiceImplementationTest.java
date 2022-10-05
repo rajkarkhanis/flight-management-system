@@ -6,6 +6,7 @@ import com.flights.dto.UserDto;
 import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ class UserServiceImplementationTest {
     UserDao dao;
 
     @Test
+    @Disabled
     void testaddUser() throws InvalidEmail, InvalidPhoneNumber {
         User u = new User();
         u.setUserId(1);
