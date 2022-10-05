@@ -141,7 +141,14 @@ assertThat(BCrypt.checkpw("123",newUser.getUserPassword()));
         u1.setUserEmail("Pia@gmail.com");
         u1.setUserPhone("8907654321");
 
-        assertThat(userservice.updateUser(u1)).isEqualTo(u1);
+        UserDto u3 = new UserDto();
+        u3.setUserId(1);
+        u3.setUserType("Customer");
+        u3.setUserName("Tia");
+        u3.setUserPassword("123");
+        u3.setUserEmail("Pia@gmail.com");
+        u3.setUserPhone("8907654321");
+        assertThat(userservice.updateUser(u3)).isEqualTo(u1);
     }
 
     @Test

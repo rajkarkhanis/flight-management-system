@@ -20,13 +20,13 @@ public interface UserService {
     List<User> viewUser();
     //Shows the details of all users.
 
-    User updateUser(User user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber;
+    User updateUser(UserDto user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber;
     //Updates the details of a user.
 
     void deleteUser(BigInteger userId) throws RecordNotFound;
     //Removes a user as per the user id.
 
-    void validateUser(User user) throws InvalidPhoneNumber;
+    void validateUser(String phone) throws InvalidPhoneNumber;
     //Validates the attributes of a user.
 
     User findByUserName(String username) throws RecordNotFound;
