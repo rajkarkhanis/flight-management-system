@@ -16,6 +16,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     private final AirportDao airportDao;
 
     private final ScheduleDao scheduleDao;
+
     @Override
     public Schedule addSchedule(ScheduleDto scheduleDto) {
         Schedule newSchedule = new Schedule(
@@ -31,15 +32,41 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public List<Schedule> viewSchedule() {
        return scheduleDao.findAll();
-
     }
 
     @Override
     public Schedule viewSchedule(int scheduleId) throws RecordNotFound {
         if(scheduleDao.findByScheduleId(scheduleId) == null)
             throw new RecordNotFound("Schedule object does not exist");
+        return scheduleDao.findById(scheduleId).orElseThrow();
+    }
 
-     return scheduleDao.findById(scheduleId).orElseThrow();
+    @Override
+    public Schedule modifySchedule(ScheduleDto scheduleDto) throws RecordNotFound {
+        Schedule newSchedule = new Schedule();
+        newSchedule.setArrivalTime(scheduleDto.getArrivalTime());
+        newSchedule.setDepartureTime(scheduleDto.getDepartureTime());
+        newSchedule.setSourceAirport(airportDao.findByAirportCode(scheduleDto.getSourceAirportCode()));
+        newSchedule.setDestinationAirport(airportDao.findByAirportCode(scheduleDto.getDestinationAirportCode()));
 
+        Schedule foundSchedule = scheduleDao.findById(newSchedule.getScheduleId()).orElseThrow(
+                () -> new RecordNotFound("Schedule does not exist")
+        );
+
+        foundSchedule.setDestinationAirport(newSchedule.getDestinationAirport());
+        foundSchedule.setSourceAirport(newSchedule.getSourceAirport());
+        foundSchedule.setDepartureTime(newSchedule.getDepartureTime());
+        foundSchedule.setArrivalTime(newSchedule.getArrivalTime());
+
+        scheduleDao.save(foundSchedule);
+        return foundSchedule;
+    }
+
+    @Override
+    public void deleteSchedule(int scheduleId) throws RecordNotFound {
+        Schedule schedule = scheduleDao.findById(scheduleId).orElseThrow(
+                () -> new RecordNotFound("Schedule does not exist")
+        );
+        scheduleDao.deleteById(schedule.getScheduleId());
     }
 }
