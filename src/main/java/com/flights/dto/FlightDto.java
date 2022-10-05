@@ -10,7 +10,7 @@ public class FlightDto {
     private BigInteger flightId;
     @NotEmpty(message = "Flight Model cannot be empty")
     private String flightModel;
-    @NotEmpty(message = "Flight Model cannot be empty")
+    @NotEmpty(message = "Carrier Name cannot be empty")
     private String carrierName;
     @NotNull(message = "Seat capacity cannot be null")@DecimalMin(value = "1", message = "Seat capacity should be greater than 0")
     private Integer seatCapacity;

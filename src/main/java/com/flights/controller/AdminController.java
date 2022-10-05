@@ -8,14 +8,10 @@ import com.flights.dto.ScheduleDto;
 import com.flights.dto.ScheduledFlightDto;
 import com.flights.exception.*;
 import com.flights.exception.RecordNotFound;
-import com.flights.service.FlightService;
-import com.flights.service.ScheduleService;
-import com.flights.service.ScheduledFlightService;
-import com.flights.service.UserService;
+import com.flights.service.*;
 import com.flights.utils.AirportDateWrapper;
 import com.flights.utils.FlightScheduleWrapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +41,7 @@ public class AdminController {
     private final UserService userService;
 
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
+    public ResponseEntity<Flight> addFlight(@RequestBody @Valid FlightDto flight) throws InvalidDataEntry, RecordAlreadyExists {
         Flight addedFlight = flightService.addFlight(flight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
