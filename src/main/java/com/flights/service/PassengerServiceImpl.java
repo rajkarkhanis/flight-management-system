@@ -13,6 +13,7 @@ public class PassengerServiceImpl implements  PassengerService {
         passenger.setPassengerAge(passengerDto.getPassengerAge());
         passenger.setPassengerName(passengerDto.getPassengerName());
         passenger.setPassengerUIN(passengerDto.getPassengerUIN());
+        passenger.setPnrNumber(passengerDto.getPnrNumber());
         passenger.setLuggage(passengerDto.getLuggage());
         return passenger;
     }

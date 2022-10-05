@@ -40,7 +40,7 @@ public class AdminController {
     private final UserService userService;
 
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody @Valid FlightDto flight) throws RecordAlreadyExists {
+    public ResponseEntity<Flight> addFlight(@RequestBody @Valid FlightDto flight) {
         Flight addedFlight = flightService.addFlight(flight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
@@ -177,12 +177,12 @@ Flight flight = flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber(
         return userService.viewUser();
     }
 
-    @PutMapping("updateuser")
+    @PutMapping("/updateUser")
     public User updateUser(@RequestBody @Valid UserDto user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber{
         return userService.updateUser(user);
     }
 
-    @DeleteMapping("deleteuser/{id}")
+    @DeleteMapping("deleteUser/{id}")
     public void deleteUser(@PathVariable("id") int userId) throws RecordNotFound{
         BigInteger bi = BigInteger.valueOf(userId);
         userService.deleteUser(bi);
