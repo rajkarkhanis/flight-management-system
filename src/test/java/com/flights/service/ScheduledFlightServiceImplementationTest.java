@@ -78,7 +78,7 @@ class ScheduledFlightServiceImplementationTest {
     }
 
     @Test
-    void scheduleFlight() throws InvalidAirport, SeatNotAvailable, RecordAlreadyExists, InvalidDateTime , RecordNotFound{
+    void scheduleFlight() throws  SeatNotAvailable, RecordAlreadyExists, InvalidDateTime , RecordNotFound{
         Mockito.when(scheduledFlightDao.save(scheduledFlight)).thenReturn(scheduledFlight);
         assertThat(service.scheduleFlight(scheduledFlight)).isEqualTo(scheduledFlight);
     }
