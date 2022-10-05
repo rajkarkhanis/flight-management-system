@@ -7,10 +7,7 @@ import com.flights.dto.FlightDto;
 import com.flights.dto.ScheduleDto;
 import com.flights.dto.ScheduledFlightDto;
 import com.flights.exception.*;
-import com.flights.service.FlightService;
-import com.flights.service.ScheduleService;
-import com.flights.service.ScheduledFlightService;
-import com.flights.service.UserService;
+import com.flights.service.*;
 import com.flights.utils.AirportDateWrapper;
 import com.flights.utils.FlightScheduleWrapper;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +33,8 @@ public class AdminController {
     private final ScheduleDao scheduleDao;
 
     private final ScheduleService scheduleService;
+
+    private final BookingService bookingService;
     //    USER
     private final UserService userService;
 
@@ -149,6 +148,20 @@ public class AdminController {
         String message = "ScheduledFlight Deleted Successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    // BOOKING CONTROLS
+
+    @GetMapping("/getBookingById/{id}")
+    public Booking getBookingById(@PathVariable("id") int bookingId) throws RecordNotFound {
+        return bookingService.viewBooking(bookingId);
+    }
+
+    @GetMapping("/getAllBookings")
+    public List<Booking> getAllBookings() {
+        return bookingService.viewBooking();
+    }
+
+    // USER CONTROLS
 
     @GetMapping("getuser/{id}")
     public User viewUser(@PathVariable("id") int userId) throws RecordNotFound {
