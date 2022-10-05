@@ -3,8 +3,10 @@ package com.flights.service;
 import com.flights.bean.Booking;
 import com.flights.bean.Passenger;
 import com.flights.dto.BookingDto;
+import com.flights.exception.InvalidDateTime;
 import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
+import com.flights.exception.SeatNotAvailable;
 
 import java.util.List;
 
@@ -36,4 +38,6 @@ public interface BookingService {
     // Validates the attributes of a passenger.
     public void validatePassenger(Passenger passenger) throws InvalidPassengerUIN;
 
+    // Overloaded addBooking for testing without user auth
+    Booking addBooking(Booking booking) throws RecordNotFound, InvalidDateTime, SeatNotAvailable,InvalidPassengerUIN;
 }

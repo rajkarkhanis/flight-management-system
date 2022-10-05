@@ -9,6 +9,9 @@ public class AirportDto {
     private String airportName;
     private String airportLocation;
 
+    public AirportDto() {
+
+    }
     public AirportDto(String airportCode, String airportName, String airportLocation) {
         this.airportCode = airportCode;
         this.airportName = airportName;

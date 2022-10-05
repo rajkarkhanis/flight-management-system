@@ -1,6 +1,5 @@
 package com.flights;
 
-import com.flights.bean.User;
 import com.flights.dto.AirportDto;
 import com.flights.dto.UserDto;
 import com.flights.service.AirportService;

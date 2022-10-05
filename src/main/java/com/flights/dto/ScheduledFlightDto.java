@@ -18,6 +18,13 @@ public class ScheduledFlightDto {
         this.flightNumber = flightNumber;
     }
 
+    public int getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
+    }
 
     public int getScheduleId() {
         return scheduleId;

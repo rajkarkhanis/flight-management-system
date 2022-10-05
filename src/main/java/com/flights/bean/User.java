@@ -1,8 +1,6 @@
 package com.flights.bean;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Entity

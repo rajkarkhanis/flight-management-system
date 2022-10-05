@@ -15,6 +15,7 @@ import com.flights.service.UserService;
 import com.flights.utils.AirportDateWrapper;
 import com.flights.utils.FlightScheduleWrapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,12 @@ public class AdminController {
 
     private final ScheduleService scheduleService;
 
+    private final BookingService bookingService;
+    //    USER
+    private final UserService userService;
+
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody  @Valid FlightDto flight) throws InvalidDataEntry {
+    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
         Flight addedFlight = flightService.addFlight(flight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
@@ -140,20 +145,32 @@ Flight flight = flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber(
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    // BOOKING CONTROLS
 
-//    USER
-    private final UserService userService;
-@GetMapping("getuser/{id}")
-public User viewUser(@PathVariable("id") int userId) throws RecordNotFound {
-    BigInteger bi = BigInteger.valueOf(userId);
-  return userService.viewUser(bi);
+    @GetMapping("/getBookingById/{id}")
+    public Booking getBookingById(@PathVariable("id") int bookingId) throws RecordNotFound {
+        return bookingService.viewBooking(bookingId);
+    }
 
-}
+    @GetMapping("/getAllBookings")
+    public List<Booking> getAllBookings() {
+        return bookingService.viewBooking();
+    }
+
+    // USER CONTROLS
+
+    @GetMapping("getuser/{id}")
+    public User viewUser(@PathVariable("id") int userId) throws RecordNotFound {
+        BigInteger bi = BigInteger.valueOf(userId);
+        return userService.viewUser(bi);
+
+    }
 
     @GetMapping("getallusers")
     public List<User> viewUser() {
         return userService.viewUser();
     }
+
     @PutMapping("updateuser")
     public User updateUser(@RequestBody  @Valid User user) throws Throwable {
         return userService.updateUser(user);

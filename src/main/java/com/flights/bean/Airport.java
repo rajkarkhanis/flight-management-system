@@ -22,6 +22,9 @@ public class Airport {
 		this.airportName = airportName;
 		this.airportLocation = airportLocation;
 	}
+	public void setAirportId(Integer airportId) {
+		this.airportId = airportId;
+	}
 	public String getAirportCode() {
 		return airportCode;
 	}
