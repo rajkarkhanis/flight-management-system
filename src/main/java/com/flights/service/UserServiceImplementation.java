@@ -37,7 +37,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         newUser.setUserPassword(user.getUserPassword());
         newUser.setUserPhone(user.getUserPhone());
         newUser.setUserType(user.getUserType());
-        this.validateUser(newUser);
+        this.validateUser(newUser.getUserPhone());
         newUser.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         log.info("User is: {}",user);
         userRepo.save(newUser);
@@ -57,10 +57,10 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User updateUser(User user) throws InvalidEmail, InvalidPhoneNumber,RecordNotFound {
+    public User updateUser(UserDto user) throws InvalidEmail, InvalidPhoneNumber,RecordNotFound {
         int id = user.getUserId();
         User u = userRepo.findById(id).orElseThrow(()->new RecordNotFound(User.class.toString()));
-        this.validateUser(user);
+        this.validateUser(user.getUserPhone());
         u.setUserName(user.getUserName());
         u.setUserEmail(user.getUserEmail());
         u.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
@@ -78,11 +78,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public void validateUser(User user) throws InvalidPhoneNumber {
+    public void validateUser(String phone) throws InvalidPhoneNumber {
 
         String regexPhone = "[1-9][\\d]{9}";
         Pattern p1 = Pattern.compile(regexPhone);
-        Matcher m1 = p1.matcher(user.getUserPhone());
+        Matcher m1 = p1.matcher(phone);
         if(!m1.matches())
             throw new InvalidPhoneNumber("Phone number should contain only 10 Digits & should not start with 0");
 

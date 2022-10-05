@@ -3,10 +3,7 @@ package com.flights.controller;
 import com.flights.bean.*;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduleDao;
-import com.flights.dto.AirportDto;
-import com.flights.dto.FlightDto;
-import com.flights.dto.ScheduleDto;
-import com.flights.dto.ScheduledFlightDto;
+import com.flights.dto.*;
 import com.flights.exception.*;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.*;
@@ -181,7 +178,7 @@ Flight flight = flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber(
     }
 
     @PutMapping("updateuser")
-    public User updateUser(@RequestBody @Valid User user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber{
+    public User updateUser(@RequestBody @Valid UserDto user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber{
         return userService.updateUser(user);
     }
 

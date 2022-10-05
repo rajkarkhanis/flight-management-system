@@ -3,7 +3,7 @@ package com.flights.controller;
 import com.flights.bean.*;
 import com.flights.dto.BookingDto;
 import com.flights.dto.UserDto;
-import com.flights.exception.RecordNotFound;
+import com.flights.exception.*;
 import com.flights.service.BookingService;
 import com.flights.service.ScheduledFlightService;
 import com.flights.service.UserService;
@@ -12,7 +12,6 @@ import com.flights.utils.CustomTokenParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,14 +32,19 @@ public class CustomerController {
 
 //     CREATE A NEW USER
     @PostMapping("adduser")
-    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto user) throws Throwable{
+    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto user) throws InvalidEmail, InvalidPhoneNumber {
         User newUser = userservice.addUser(user);
+        return new ResponseEntity<>(newUser,HttpStatus.CREATED);
+    }
+    @PutMapping("modifyuser")
+    public ResponseEntity<User> modifyUser(@RequestBody @Valid UserDto user) throws InvalidEmail, InvalidPhoneNumber,RecordNotFound {
+        User newUser = userservice.updateUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
 
 //    FLIGHT BOOKING
     @PostMapping("/bookFlight")
-    public ResponseEntity<Booking> addNewBooking(@RequestBody BookingDto newBooking,@RequestHeader("Authorization") String bearerToken) throws Exception {
+    public ResponseEntity<Booking> addNewBooking(@RequestBody BookingDto newBooking,@RequestHeader("Authorization") String bearerToken) throws RecordNotFound, InvalidDateTime, SeatNotAvailable, InvalidPassengerUIN {
        Booking newBookingObj = bookingService.addBooking(newBooking,bearerToken);
         return new ResponseEntity<>(newBookingObj, HttpStatus.OK);
     }
