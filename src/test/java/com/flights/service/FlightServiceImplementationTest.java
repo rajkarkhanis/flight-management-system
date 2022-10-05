@@ -33,7 +33,9 @@ class FlightServiceImplementationTest {
       f.setSeatCapacity(140);
       Mockito.when(dao.save(f)).thenReturn(f);
       FlightDto af = new FlightDto("ABC","Juhi",140);
-      assertThat(flightservice.addFlight(af)).isEqualTo(f);
+      assertThat(flightservice.addFlight(af).getFlightModel()).isEqualTo(f.getFlightModel());
+      assertThat(flightservice.addFlight(af).getCarrierName()).isEqualTo(f.getCarrierName());
+      assertThat(flightservice.addFlight(af).getSeatCapacity()).isEqualTo(f.getSeatCapacity());
     }
 
     @Test
