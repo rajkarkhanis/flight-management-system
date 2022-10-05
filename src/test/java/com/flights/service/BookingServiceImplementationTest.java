@@ -2,10 +2,12 @@ package com.flights.service;
 
 import com.flights.bean.*;
 import com.flights.dao.BookingDao;
-import com.flights.dao.ScheduledFlightDao;
 import com.flights.dto.BookingDto;
 import com.flights.dto.PassengerDto;
+import com.flights.exception.InvalidDateTime;
+import com.flights.exception.InvalidPassengerUIN;
 import com.flights.exception.RecordNotFound;
+import com.flights.exception.SeatNotAvailable;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class BookingServiceImplementationTest {
@@ -33,9 +36,6 @@ class BookingServiceImplementationTest {
 
     @MockBean
     BookingDao bookingDao;
-
-    @MockBean
-    ScheduledFlightDao scheduledFlightDao;
 
     Flight flight;
     Schedule schedule;
@@ -47,6 +47,7 @@ class BookingServiceImplementationTest {
 
     Passenger passenger1;
     Passenger passenger2;
+    List<Passenger> passengerList;
 
     BookingDto bookingDto;
     PassengerDto passengerDto1;
@@ -84,7 +85,7 @@ class BookingServiceImplementationTest {
         scheduledFlight.setScheduledFlightId(3);
         scheduledFlight.setFlight(flight);
         scheduledFlight.setSchedule(schedule);
-        scheduledFlight.setAvailableSeats(300);
+        scheduledFlight.setAvailableSeats(100);
 
         user = new User();
         user.setUserName("Sadichchha");
@@ -121,7 +122,7 @@ class BookingServiceImplementationTest {
         passengerDto2.setPassengerUIN(passenger2.getPassengerUIN());
         passengerDto2.setPnrNumber(passenger2.getPnrNumber());
 
-        List<Passenger> passengerList = new ArrayList<>();
+        passengerList = new ArrayList<>();
         passengerList.add(passenger1);
         passengerList.add(passenger2);
 
@@ -146,9 +147,45 @@ class BookingServiceImplementationTest {
     }
 
     @Test
-    void addBooking() throws Exception {
+    void addBooking() throws RecordNotFound, InvalidDateTime, SeatNotAvailable, InvalidPassengerUIN {
+
         Mockito.when(bookingDao.save(booking)).thenReturn(booking);
         assertThat(bookingService.addBooking(booking)).isEqualTo(booking);
+
+        // RecordNotFound Exception check
+        booking.setScheduledFlight(null);
+        Mockito.when(bookingDao.save(booking)).thenReturn(booking);
+        assertThrows(RecordNotFound.class, () -> bookingService.addBooking(booking));
+        booking.setScheduledFlight(scheduledFlight);
+
+
+        // InvalidDateTime Exception check
+        booking.setBookingDate(LocalDate.of(2017, 7, 14));
+        Mockito.when(bookingDao.save(booking)).thenReturn(booking);
+        assertThrows(InvalidDateTime.class, () -> bookingService.addBooking(booking));
+        booking.setBookingDate(LocalDate.now());
+
+
+        // SeatNotAvailable Exception check
+        scheduledFlight.setAvailableSeats(1);
+        booking.setScheduledFlight(scheduledFlight);
+        Mockito.when(bookingDao.save(booking)).thenReturn(booking);
+        assertThrows(SeatNotAvailable.class, () -> bookingService.addBooking(booking));
+        scheduledFlight.setAvailableSeats(10);
+        booking.setScheduledFlight(scheduledFlight);
+
+
+        // InvalidPassengerUIN Exception check
+        passenger1.setPassengerUIN("123");
+        passengerList.add(passenger1);
+        booking.setPassengerList(passengerList);
+        Mockito.when(bookingDao.save(booking)).thenReturn(booking);
+        assertThrows(InvalidPassengerUIN.class, () -> bookingService.addBooking(booking));
+        passenger1.setPassengerUIN("123456449123");
+        passengerList.add(passenger1);
+        booking.setPassengerList(passengerList);
+
+
     }
 
     @Test
@@ -173,13 +210,14 @@ class BookingServiceImplementationTest {
     }
 
     @Test
-    void testviewBooking() throws RecordNotFound {
+    void testViewBooking() throws RecordNotFound {
         Optional<Booking> b = Optional.of(booking);
         Mockito.when(bookingDao.findById(1)).thenReturn(b);
         assertThat(bookingService.viewBooking(1)).isEqualTo(booking);
     }
     @Test
     void deleteBooking() {
+
         Mockito.when(bookingDao.existsById(1)).thenReturn(false);
         assertFalse(bookingDao.existsById(1));
 

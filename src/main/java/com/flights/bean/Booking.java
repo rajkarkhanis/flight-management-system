@@ -22,7 +22,7 @@ public class Booking {
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Passenger> passengerList;
 	private Double ticketCost;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private ScheduledFlight scheduledFlight;
 	
 	public Booking() {

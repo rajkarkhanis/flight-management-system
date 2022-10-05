@@ -5,18 +5,17 @@ import com.flights.dao.AirportDao;
 import com.flights.dao.ScheduleDao;
 import com.flights.dto.ScheduleDto;
 import com.flights.exception.RecordNotFound;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService{
-    @Autowired
-    AirportDao airportDao;
 
-    @Autowired
-    ScheduleDao scheduleDao;
+    private final AirportDao airportDao;
+
+    private final ScheduleDao scheduleDao;
     @Override
     public Schedule addSchedule(ScheduleDto scheduleDto) {
         Schedule newSchedule = new Schedule(

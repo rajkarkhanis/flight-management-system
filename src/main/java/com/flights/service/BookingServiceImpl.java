@@ -41,9 +41,9 @@ public class BookingServiceImpl implements  BookingService{
                 newBooking.getPassengerList().size()
         );
 
-        validateBooking(booking);
+        BookingService.validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
-            validatePassenger(p);
+            BookingService.validatePassenger(p);
 
         // Update available seats
         int initialSeatsAvailable = booking.getScheduledFlight().getAvailableSeats();
@@ -62,9 +62,9 @@ public class BookingServiceImpl implements  BookingService{
         if(repo.findById(id).isEmpty())
             throw new RecordNotFound(Booking.class.toString());
 
-        validateBooking(booking);
+        BookingService.validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
-            validatePassenger(p);
+            BookingService.validatePassenger(p);
 
         Booking b = repo.findById(id).orElseThrow();
 
@@ -115,36 +115,14 @@ public class BookingServiceImpl implements  BookingService{
     }
 
     @Override
-    public void validateBooking(Booking booking) throws InvalidDateTime,SeatNotAvailable {
-
-        // Validate if bookingDate is not elapsed
-        if(booking.getBookingDate().isBefore(LocalDate.now())) {
-            throw new InvalidDateTime("Entered booking date is a past date");
-        }
-
-        // booking.noOfPassengers should be less than available seats in scheduled flight
-        if(booking.getNoOfPassengers() > booking.getScheduledFlight().getAvailableSeats()) {
-            throw new SeatNotAvailable("Passenger list exceeds available seats");
-        }
-
-    }
-
-    @Override
-    public void validatePassenger(Passenger passenger) throws InvalidPassengerUIN {
-
-        // Validate if passengerUIN is of 12 digits
-        if (passenger.getPassengerUIN().length() != 12) {
-            throw new InvalidPassengerUIN("UIN is not 12 digits");
-        }
-
-    }
-
-    @Override
     public Booking addBooking(Booking booking) throws RecordNotFound,InvalidDateTime,SeatNotAvailable,InvalidPassengerUIN  {
 
-        validateBooking(booking);
+        if(booking.getScheduledFlight() == null)
+            throw new RecordNotFound(ScheduledFlight.class.toString());
+
+        BookingService.validateBooking(booking);
         for (Passenger p: booking.getPassengerList())
-            validatePassenger(p);
+            BookingService.validatePassenger(p);
 
         // Update available seats
         int initialSeatsAvailable = booking.getScheduledFlight().getAvailableSeats();
