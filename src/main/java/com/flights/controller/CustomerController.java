@@ -3,6 +3,9 @@ package com.flights.controller;
 import com.flights.bean.*;
 import com.flights.dto.BookingDto;
 import com.flights.dto.UserDto;
+import com.flights.exception.InvalidEmail;
+import com.flights.exception.InvalidPhoneNumber;
+import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
 import com.flights.service.BookingService;
 import com.flights.service.ScheduledFlightService;
@@ -31,7 +34,7 @@ public class CustomerController {
 
 //     CREATE A NEW USER
     @PostMapping("adduser")
-    public ResponseEntity<User> addUser(@RequestBody UserDto user) throws Throwable{
+    public ResponseEntity<User> addUser(@RequestBody UserDto user) throws InvalidEmail, InvalidPhoneNumber {
         User newUser = userservice.addUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
@@ -86,6 +89,5 @@ public class CustomerController {
         return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
     }
 //TODO: view all flights
-    //TODO:
 
 }

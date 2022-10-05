@@ -44,7 +44,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
     @Override
     public List<ScheduledFlight> viewScheduledFlights(BigInteger flightNumber) throws RecordNotFound {
         Flight flight = flightDao.findById(flightNumber).orElseThrow(
-                () -> new RecordNotFound("Flight with number: " + flightNumber + " doesn't exist")
+                () -> new RecordNotFound("Flight with number: " + flightNumber + " not found")
         );
         return List.of(scheduledFlightDao.getScheduledFlightByFlight(flight));
     }

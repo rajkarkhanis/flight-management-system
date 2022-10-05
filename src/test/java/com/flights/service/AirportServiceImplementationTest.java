@@ -48,8 +48,8 @@ class AirportServiceImplementationTest {
         a1.setAirportCode("CCU");
         a1.setAirportLocation("Kolkata");
         a1.setAirportName("Netaji Subhash Chandra Bose International Aiport");
-        Optional<Airport> a2= Optional.of(a1);
-        Mockito.when(AirportDao.findById("CCU")).thenReturn(a2);
+
+        Mockito.when(AirportDao.findByAirportCode("CCU")).thenReturn(a1);
         assertThat(airportservice.viewAirport("CCU")).isEqualTo(a1);
     }
 }

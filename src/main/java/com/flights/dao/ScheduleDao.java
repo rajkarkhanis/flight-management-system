@@ -1,6 +1,5 @@
 package com.flights.dao;
 
-import com.flights.bean.Airport;
 import com.flights.bean.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

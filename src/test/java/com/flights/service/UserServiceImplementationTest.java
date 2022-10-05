@@ -1,8 +1,8 @@
 package com.flights.service;
 
-import com.flights.bean.Flight;
 import com.flights.bean.User;
 import com.flights.dao.UserDao;
+import com.flights.dto.UserDto;
 import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
@@ -35,8 +35,17 @@ class UserServiceImplementationTest {
         u.setUserPassword("123");
         u.setUserEmail("Ria@gmail.com");
         u.setUserPhone("9876543012");
+
+        UserDto userDto = new UserDto(
+                u.getUserType(),
+                u.getUserName(),
+                u.getUserPassword(),
+                u.getUserPhone(),
+                u.getUserEmail()
+        );
+
         Mockito.when(dao.save(u)).thenReturn(u);
-        assertThat(userservice.addUser(u)).isEqualTo(u);
+        assertThat(userservice.addUser(userDto)).isEqualTo(u);
     }
 
     @Test

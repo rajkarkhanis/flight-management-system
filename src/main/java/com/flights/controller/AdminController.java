@@ -3,11 +3,10 @@ package com.flights.controller;
 import com.flights.bean.*;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduleDao;
-import com.flights.dao.ScheduledFlightDao;
+import com.flights.dto.FlightDto;
 import com.flights.dto.ScheduleDto;
 import com.flights.dto.ScheduledFlightDto;
 import com.flights.exception.*;
-import com.flights.exception.RecordNotFound;
 import com.flights.service.FlightService;
 import com.flights.service.ScheduleService;
 import com.flights.service.ScheduledFlightService;
@@ -15,7 +14,6 @@ import com.flights.service.UserService;
 import com.flights.utils.AirportDateWrapper;
 import com.flights.utils.FlightScheduleWrapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,10 +36,17 @@ public class AdminController {
     private final ScheduleDao scheduleDao;
 
     private final ScheduleService scheduleService;
+    //    USER
+    private final UserService userService;
 
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
-        Flight addedFlight = flightService.addFlight(flight);
+    public ResponseEntity<Flight> addFlight(@RequestBody FlightDto flightDto) throws InvalidDataEntry, RecordAlreadyExists {
+        Flight newFlight = new Flight(
+                flightDto.getFlightModel(),
+                flightDto.getCarrierName(),
+                flightDto.getSeatCapacity()
+        );
+        Flight addedFlight = flightService.addFlight(newFlight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
 
@@ -58,8 +63,13 @@ public class AdminController {
     }
 
     @PutMapping(value = "/modifyFlight")
-    public ResponseEntity<Flight> modifyFlight(@RequestBody Flight flight) throws RecordNotFound, InvalidDataEntry {
-        Flight modifiedFlight = flightService.modifyFlight(flight);
+    public ResponseEntity<Flight> modifyFlight(@RequestBody FlightDto flightDto) throws RecordNotFound, InvalidDataEntry {
+        Flight newFlight = new Flight(
+                flightDto.getFlightModel(),
+                flightDto.getCarrierName(),
+                flightDto.getSeatCapacity()
+        );
+        Flight modifiedFlight = flightService.modifyFlight(newFlight);
         return new ResponseEntity<>(modifiedFlight, HttpStatus.OK);
     }
 
@@ -70,7 +80,7 @@ public class AdminController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    Add Schedule
+    //    Add Schedule
     @PostMapping(value = "/addSchedule")
     public ResponseEntity<Schedule> addFlight(@RequestBody ScheduleDto scheduleDto) throws InvalidDataEntry, RecordAlreadyExists {
         Schedule newSchedule = scheduleService.addSchedule(scheduleDto);
@@ -83,13 +93,13 @@ public class AdminController {
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);
     }
 
+    // Optional: Add modifySchedule & deleteSchedule
+
     @GetMapping(value = "/viewSchedule/{scheduleId}")
     public ResponseEntity<Schedule> viewFlight(@PathVariable int scheduleId) throws RecordNotFound {
         Schedule schedule = scheduleService.viewSchedule(scheduleId);
         return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
-
-    // Optional: Add modifySchedule & deleteSchedule
 
     @PostMapping(value = "/scheduleFlight")
     public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody ScheduledFlightDto scheduledFlightDto) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
@@ -140,27 +150,25 @@ public class AdminController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @GetMapping("getuser/{id}")
+    public User viewUser(@PathVariable("id") int userId) throws RecordNotFound {
+        BigInteger bi = BigInteger.valueOf(userId);
+        return userService.viewUser(bi);
 
-//    USER
-    private final UserService userService;
-@GetMapping("getuser/{id}")
-public User viewUser(@PathVariable("id") int userId) throws RecordNotFound {
-    BigInteger bi = BigInteger.valueOf(userId);
-  return userService.viewUser(bi);
-
-}
+    }
 
     @GetMapping("getallusers")
     public List<User> viewUser() {
         return userService.viewUser();
     }
+
     @PutMapping("updateuser")
     public User updateUser(@RequestBody User user) throws Throwable {
         return userService.updateUser(user);
     }
 
     @DeleteMapping("deleteuser/{id}")
-    public void deleteUser(@PathVariable("id") int userId) throws RecordNotFound{
+    public void deleteUser(@PathVariable("id") int userId) throws RecordNotFound {
         BigInteger bi = BigInteger.valueOf(userId);
         userService.deleteUser(bi);
     }

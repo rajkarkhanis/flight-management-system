@@ -19,9 +19,9 @@ public class Passenger {
 	String passengerName;
 	Integer passengerAge;
 	String passengerUIN;
-	Double Luggage;
+	Double luggage;
 	
-	public Passenger(){};
+	public Passenger(){}
 	public Passenger(BigInteger pnrNumber, String passengerName, Integer passengerAge, String passengerUIN,
 			Double luggage) {
 		super();
@@ -29,7 +29,7 @@ public class Passenger {
 		this.passengerName = passengerName;
 		this.passengerAge = passengerAge;
 		this.passengerUIN = passengerUIN;
-		Luggage = luggage;
+		this.luggage = luggage;
 	}
 	public BigInteger getPnrNumber() {
 		return pnrNumber;
@@ -56,14 +56,14 @@ public class Passenger {
 		this.passengerUIN = passengerUIN;
 	}
 	public Double getLuggage() {
-		return Luggage;
+		return luggage;
 	}
 	public void setLuggage(Double luggage) {
-		Luggage = luggage;
+		this.luggage = luggage;
 	}
 	@Override
 	public String toString() {
 		return "Passenger [pnrNumber=" + pnrNumber + ", passengerName=" + passengerName + ", passengerAge="
-				+ passengerAge + ", passengerUIN=" + passengerUIN + ", Luggage=" + Luggage + "]";
+				+ passengerAge + ", passengerUIN=" + passengerUIN + ", Luggage=" + luggage + "]";
 	}
 }

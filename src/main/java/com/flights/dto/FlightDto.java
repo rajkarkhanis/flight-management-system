@@ -1,6 +1,5 @@
 package com.flights.dto;
 
-import javax.persistence.Column;
 import java.math.BigInteger;
 
 public class FlightDto {

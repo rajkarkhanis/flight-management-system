@@ -3,6 +3,7 @@ package com.flights.controller;
 import java.math.BigInteger;
 import java.util.List;
 
+import com.flights.dto.FlightDto;
 import com.flights.exception.InvalidDataEntry;
 import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
@@ -27,30 +28,33 @@ public class FlightController {
 	
 	
 	@PostMapping("addflight")
-	public Flight addFlight(@RequestBody Flight f) throws InvalidDataEntry, RecordAlreadyExists {
-		Flight f1=flightservice.addFlight(f);
-		
-		return f1;
+	public Flight addFlight(@RequestBody FlightDto flightDto) throws InvalidDataEntry, RecordAlreadyExists {
+		Flight newFlight = new Flight(
+				flightDto.getFlightModel(),
+				flightDto.getCarrierName(),
+				flightDto.getSeatCapacity()
+		);
+		return flightservice.addFlight(newFlight);
 		
 	}
 	@PutMapping(path="/updateflight")
-	public Flight modifyFlight(@RequestBody Flight f) throws RecordNotFound, InvalidDataEntry {
-		Flight f1=flightservice.modifyFlight(f);
-		
-	
-		return f1;
+	public Flight modifyFlight(@RequestBody FlightDto flightDto) throws RecordNotFound, InvalidDataEntry {
+		Flight newFlight = new Flight(
+				flightDto.getFlightModel(),
+				flightDto.getCarrierName(),
+				flightDto.getSeatCapacity()
+		);
+		return flightservice.modifyFlight(newFlight);
 	}
 	@GetMapping("viewflightbyflightnumber/{flightNumber}")
 	public Flight viewFlight(@PathVariable BigInteger flightNumber) throws RecordNotFound {
-		Flight f2=flightservice.viewFlight(flightNumber);
-		return f2;
+		return flightservice.viewFlight(flightNumber);
 	}
 	
 	@GetMapping(path="viewflight")
 	public List<Flight> viewFlight()
 	{
-		List<Flight> lf=flightservice.viewFlight();
-		return lf;	
+		return flightservice.viewFlight();
 	}
 	
 	@DeleteMapping(path="/deleteflight/{flightNumber}") // ..variable name should be given

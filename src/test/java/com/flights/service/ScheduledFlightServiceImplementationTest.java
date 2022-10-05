@@ -135,8 +135,4 @@ class ScheduledFlightServiceImplementationTest {
         Mockito.when(scheduledFlightDao.existsById(3)).thenReturn(false);
         assertFalse(scheduledFlightDao.existsById(3));
     }
-
-    @Test
-    void validateScheduledFlight() {
-    }
 }

@@ -1,8 +1,5 @@
 package com.flights.dto;
 
-import com.flights.bean.Flight;
-import com.flights.bean.Schedule;
-
 import java.math.BigInteger;
 
 public class ScheduledFlightDto {
