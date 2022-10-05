@@ -1,12 +1,10 @@
 package com.flights.bean;
 
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Component
 public class Schedule {
 
     @Id @GeneratedValue

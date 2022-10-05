@@ -4,12 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 
 @Data
 @Entity
-@Component
 @Table
 public class Booking {
 	

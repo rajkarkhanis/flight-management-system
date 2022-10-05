@@ -4,9 +4,7 @@ import java.math.BigInteger;
 
 import javax.persistence.*;
 
-import org.springframework.stereotype.Component;
 @Entity
-@Component
 public class Flight {
 	@Id
 	@GeneratedValue
