@@ -56,7 +56,7 @@ public class BookingServiceImpl implements  BookingService{
     }
 
     @Override
-    public Booking modifyBooking(Booking booking) throws Exception {
+    public Booking modifyBooking(Booking booking) throws RecordNotFound, InvalidDateTime, SeatNotAvailable, InvalidPassengerUIN {
         int id = booking.getBookingId();
 
         if(repo.findById(id).isEmpty())
@@ -137,5 +137,22 @@ public class BookingServiceImpl implements  BookingService{
             throw new InvalidPassengerUIN("UIN is not 12 digits");
         }
 
+    }
+
+    @Override
+    public Booking addBooking(Booking booking) throws RecordNotFound,InvalidDateTime,SeatNotAvailable,InvalidPassengerUIN  {
+
+        validateBooking(booking);
+        for (Passenger p: booking.getPassengerList())
+            validatePassenger(p);
+
+        // Update available seats
+        int initialSeatsAvailable = booking.getScheduledFlight().getAvailableSeats();
+        int currentSeatsAvailable = initialSeatsAvailable - booking.getNoOfPassengers();
+        booking.getScheduledFlight().setAvailableSeats(currentSeatsAvailable);
+
+        booking.setScheduledFlight(scheduledFlightRepo.findByScheduledFlightId(booking.getScheduledFlight().getScheduledFlightId()));
+        repo.save(booking);
+        return booking;
     }
 }
