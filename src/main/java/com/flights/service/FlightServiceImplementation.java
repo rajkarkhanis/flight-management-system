@@ -3,71 +3,59 @@ package com.flights.service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.function.Supplier;
+
+import com.flights.dto.FlightDto;
 import com.flights.exception.InvalidDataEntry;
-import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import com.flights.bean.Flight;
 import com.flights.dao.FlightDao;
-
-@Service
+@Service @RequiredArgsConstructor
 public class FlightServiceImplementation implements FlightService {
 
-    @Autowired
-	FlightDao dao;
-
-	Supplier<RecordNotFound> recordNotFound = () -> new RecordNotFound("Flight doesn't exist in the database");
-
+	private final FlightDao dao;
 	@Override
-	public Flight addFlight(Flight flight) throws InvalidDataEntry, RecordAlreadyExists {
-		this.validateFlight(flight);
-		List<Flight>flightList=dao.findAll();
-		for(Flight x:flightList) {
-			if (x.getFlightModel().equals(flight.getFlightModel())) {
-				throw new RecordAlreadyExists("Flight already exists");
-			}
-		}
-		dao.save(flight);
-		return flight;
+	public Flight addFlight(FlightDto flight) throws InvalidDataEntry{
+		Flight newFlight = new Flight(flight.getFlightModel(), flight.getCarrierName(), flight.getSeatCapacity());
+		dao.save(newFlight);
+		return newFlight;
 	}
 
 	@Override
-	public Flight modifyFlight(Flight flight) throws RecordNotFound, InvalidDataEntry{
-		BigInteger id=flight.getFlightNumber() ;
-		Flight flight1=dao.findById(id).orElseThrow(recordNotFound);
-		this.validateFlight(flight);
-		flight1.setFlightNumber(flight.getFlightNumber());
-		flight1.setFlightModel(flight.getFlightModel());
-		flight1.setCarrierName(flight.getCarrierName());
-		flight1.setSeatCapacity(flight.getSeatCapacity());
-		dao.save(flight1);
-		return flight1;
+	public Flight modifyFlight(FlightDto flight) throws RecordNotFound, InvalidDataEntry,NullPointerException{
+		if(flight.getFlightId()==null){
+			throw new NullPointerException("Flight Id cannot be null");
+		}
+		BigInteger id=flight.getFlightId();
+		Supplier s1=()->new RecordNotFound("Flight does not exist in Database");
+		Flight modifiedFlight=dao.findById(id).orElseThrow(s1);
+		modifiedFlight.setFlightModel(flight.getFlightModel());
+		modifiedFlight.setCarrierName(flight.getCarrierName());
+		modifiedFlight.setSeatCapacity(flight.getSeatCapacity());
+		dao.save(modifiedFlight);
+		return modifiedFlight;
 	}
 
 	@Override
 	public Flight viewFlight(BigInteger flightNumber) throws RecordNotFound{
-		return dao.findById(flightNumber).orElseThrow(recordNotFound);
+		Supplier s1=()->new RecordNotFound("Flight does not exist in database");
+		return dao.findById(flightNumber).orElseThrow(s1);
+
+
 	}
 
 	@Override
 	public List<Flight> viewFlight() {
 		return dao.findAll();
+
 	}
 
 	@Override
 	public void deleteFlight(BigInteger flightNumber) throws RecordNotFound {
-		Flight foundFlight = dao.findById(flightNumber).orElseThrow(recordNotFound);
-		dao.deleteById(foundFlight.getFlightNumber());
-	}
-
-	@Override
-	public void validateFlight(Flight flight) throws InvalidDataEntry {
-		if(flight.getSeatCapacity()<=0)
-			throw new InvalidDataEntry("The seat capacity must be greater than zero");
-		if(flight.getFlightModel()==null || flight.getFlightModel().isEmpty())
-			throw new InvalidDataEntry("The Flight Model must not be NULL");
-		if(flight.getCarrierName()==null || flight.getCarrierName().isEmpty())
-			throw  new InvalidDataEntry("The CarrierName must not be null");
+		Supplier s1=()->new RecordNotFound("Flight does not exist in database");
+		dao.findById(flightNumber).orElseThrow(s1);
+		dao.deleteById(flightNumber);
 	}
 }

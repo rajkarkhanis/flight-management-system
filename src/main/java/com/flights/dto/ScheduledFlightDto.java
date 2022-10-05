@@ -1,10 +1,13 @@
 package com.flights.dto;
 
+
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 public class ScheduledFlightDto {
+    @NotNull( message = "Flight Number cannot be null")
     private BigInteger flightNumber;
-    private int availableSeats;
+    @NotNull( message = "Schedule Id cannot be null")
     private int scheduleId;
 
     public BigInteger getFlightNumber() {

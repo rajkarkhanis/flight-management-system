@@ -80,7 +80,7 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
             throw new RecordAlreadyExists("ScheduledFlight already exists");
         }
 
-        flightService.validateFlight(scheduledFlight.getFlight());
+
 
         if (scheduledFlight.getAvailableSeats() <= 0) {
             throw new SeatNotAvailable("Seats not available");

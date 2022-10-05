@@ -2,6 +2,7 @@ package com.flights.service;
 
 import com.flights.bean.Flight;
 import com.flights.dao.FlightDao;
+import com.flights.dto.FlightDto;
 import com.flights.exception.InvalidDataEntry;
 import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
@@ -26,15 +27,15 @@ class FlightServiceImplementationTest {
   @MockBean
   FlightDao dao;
     @Test
-    void addFlight() throws RecordAlreadyExists, InvalidDataEntry {
+    void addFlight() throws  InvalidDataEntry {
       Flight f=new Flight();
       f.setFlightNumber(BigInteger.valueOf(1));
       f.setFlightModel("ABC");
       f.setCarrierName("Juhi");
       f.setSeatCapacity(140);
       Mockito.when(dao.save(f)).thenReturn(f);
-
-      assertThat(flightservice.addFlight(f)).isEqualTo(f);
+      FlightDto af = new FlightDto("ABC","Juhi",140);
+      assertThat(flightservice.addFlight(af)).isEqualTo(f);
     }
 
     @Test
@@ -52,7 +53,8 @@ class FlightServiceImplementationTest {
       f.setFlightModel("DEF");
       f.setCarrierName("Airlines");
       f.setSeatCapacity(250);
-      assertThat(flightservice.modifyFlight(f)).isEqualTo(f);
+      FlightDto mf = new FlightDto(BigInteger.valueOf(1),"DEF","Airlines",250);
+      assertThat(flightservice.modifyFlight(mf)).isEqualTo(f);
     }
 
     @Test

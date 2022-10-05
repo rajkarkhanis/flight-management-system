@@ -26,7 +26,7 @@ public interface UserService {
     void deleteUser(BigInteger userId) throws RecordNotFound;
     //Removes a user as per the user id.
 
-    void validateUser(User user) throws InvalidEmail, InvalidPhoneNumber;
+    void validateUser(User user) throws InvalidPhoneNumber;
     //Validates the attributes of a user.
 
     User findByUserName(String username) throws RecordNotFound;

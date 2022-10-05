@@ -11,53 +11,58 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(RecordNotFound.class)
-    public ResponseEntity<?> recordNotFoundException(RecordNotFound ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> recordNotFoundException(RecordNotFound ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(SeatNotAvailable.class)
-    public ResponseEntity<?> seatNotAvailableException(SeatNotAvailable ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> seatNotAvailableException(SeatNotAvailable ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidDateTime.class)
-    public ResponseEntity<?> invalidDateTimeException(InvalidDateTime ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> invalidDateTimeException(InvalidDateTime ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidPassengerUIN.class)
-    public ResponseEntity<?> invalidPassengerUIN(InvalidPassengerUIN ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> invalidPassengerUIN(InvalidPassengerUIN ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidDataEntry.class)
-    public ResponseEntity<?> invalidDataEntry(InvalidDataEntry ex,WebRequest request) {
+    public ResponseEntity<ErrorDetails> invalidDataEntry(InvalidDataEntry ex,WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(InvalidEmail.class)
-    public ResponseEntity<?> invalidEmail(InvalidEmail ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> invalidEmail(InvalidEmail ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidPhoneNumber.class)
-    public ResponseEntity<?> invalidPhoneNumber(InvalidPhoneNumber ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> invalidPhoneNumber(InvalidPhoneNumber ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidAirport.class)
-    public ResponseEntity<?> invalidAirport(InvalidAirport ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> invalidAirport(InvalidAirport ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(RecordAlreadyExists.class)
-    public ResponseEntity<?> recordAlreadyExists(RecordAlreadyExists ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> recordAlreadyExists(RecordAlreadyExists ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorDetails> nullPointerException(RecordAlreadyExists ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
