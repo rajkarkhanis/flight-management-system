@@ -7,9 +7,9 @@ import com.flights.dao.ScheduleDao;
 import com.flights.dto.ScheduleDto;
 import com.flights.exception.RecordNotFound;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @SpringBootTest
 class ScheduleServiceImplementationTest {
 
-    @MockBean
+    @Autowired
     ScheduleService scheduleService;
 
     @MockBean
@@ -44,7 +44,6 @@ class ScheduleServiceImplementationTest {
 
     @BeforeEach
     void setup() {
-
         source = new Airport();
         source.setAirportCode("BOM");
         source.setAirportLocation("Mumbai");
@@ -59,7 +58,6 @@ class ScheduleServiceImplementationTest {
         LocalDateTime arrivalTime = LocalDateTime.of(2022, Month.OCTOBER, 16, 17, 5, 0);
 
         schedule = new Schedule();
-        schedule.setScheduleId(2);
         schedule.setSourceAirport(source);
         schedule.setDestinationAirport(destination);
         schedule.setArrivalTime(arrivalTime);
@@ -77,10 +75,19 @@ class ScheduleServiceImplementationTest {
 
     @Test
     void addSchedule() {
-        Mockito.when(airportDao.save(source)).thenReturn(source);
-        Mockito.when(airportDao.save(destination)).thenReturn(destination);
+        Mockito.when(airportDao.findByAirportCode(scheduleDto.getDestinationAirportCode()))
+                .thenReturn(schedule.getDestinationAirport());
+
+        Mockito.when(airportDao.findByAirportCode(scheduleDto.getSourceAirportCode()))
+                .thenReturn(schedule.getSourceAirport());
+
         Mockito.when(scheduleDao.save(schedule)).thenReturn(schedule);
-        assertThat(scheduleService.addSchedule(scheduleDto)).isNull();
+
+        Schedule newSchedule = scheduleService.addSchedule(scheduleDto);
+        assertThat(newSchedule.getSourceAirport()).isEqualTo(schedule.getSourceAirport());
+        assertThat(newSchedule.getDestinationAirport()).isEqualTo(schedule.getDestinationAirport());
+        assertThat(newSchedule.getArrivalTime()).isEqualTo(schedule.getArrivalTime());
+        assertThat(newSchedule.getDepartureTime()).isEqualTo(schedule.getDepartureTime());
     }
 
     @Test
@@ -92,7 +99,6 @@ class ScheduleServiceImplementationTest {
 
     @Test
     void viewAllSchedules() {
-
         Mockito.when(airportDao.save(source)).thenReturn(source);
         Mockito.when(airportDao.save(destination)).thenReturn(destination);
         Mockito.when(scheduleDao.save(schedule)).thenReturn(schedule);
@@ -101,13 +107,13 @@ class ScheduleServiceImplementationTest {
     }
 
     @Test
-    @Disabled
     void testModifySchedule() throws RecordNotFound {
         Mockito.when(scheduleDao.findById(schedule.getScheduleId()))
                 .thenReturn(Optional.ofNullable(schedule));
 
         Mockito.when(scheduleDao.save(schedule)).thenReturn(schedule);
 
+        System.out.println(scheduleService.modifySchedule(scheduleDto));
         assertThat(scheduleService.modifySchedule(scheduleDto)).isEqualTo(schedule);
     }
 

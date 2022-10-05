@@ -26,7 +26,6 @@ class FlightServiceImplementationTest {
   @MockBean
   FlightDao dao;
     @Test
-    @Disabled
     void addFlight() {
       Flight f=new Flight();
       f.setFlightNumber(BigInteger.valueOf(1));

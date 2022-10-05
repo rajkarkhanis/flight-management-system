@@ -43,23 +43,24 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public Schedule modifySchedule(ScheduleDto scheduleDto) throws RecordNotFound {
-        Schedule newSchedule = new Schedule();
-        newSchedule.setArrivalTime(scheduleDto.getArrivalTime());
-        newSchedule.setDepartureTime(scheduleDto.getDepartureTime());
-        newSchedule.setSourceAirport(airportDao.findByAirportCode(scheduleDto.getSourceAirportCode()));
-        newSchedule.setDestinationAirport(airportDao.findByAirportCode(scheduleDto.getDestinationAirportCode()));
-
-        Schedule foundSchedule = scheduleDao.findById(newSchedule.getScheduleId()).orElseThrow(
+        Schedule foundSchedule = scheduleDao.findById(scheduleDto.getScheduleId()).orElseThrow(
                 () -> new RecordNotFound("Schedule does not exist")
         );
 
-        foundSchedule.setDestinationAirport(newSchedule.getDestinationAirport());
-        foundSchedule.setSourceAirport(newSchedule.getSourceAirport());
-        foundSchedule.setDepartureTime(newSchedule.getDepartureTime());
-        foundSchedule.setArrivalTime(newSchedule.getArrivalTime());
+        scheduleDao.findByScheduleId(scheduleDto.getScheduleId());
 
-        scheduleDao.save(foundSchedule);
-        return foundSchedule;
+        foundSchedule.setScheduleId(scheduleDto.getScheduleId());
+        foundSchedule.setDestinationAirport(
+                airportDao.findByAirportCode(scheduleDto.getDestinationAirportCode())
+        );
+        foundSchedule.setSourceAirport(
+                airportDao.findByAirportCode(scheduleDto.getSourceAirportCode())
+        );
+        foundSchedule.setDepartureTime(scheduleDto.getDepartureTime());
+        foundSchedule.setArrivalTime(scheduleDto.getArrivalTime());
+
+        System.out.println(foundSchedule.toString());
+        return scheduleDao.save(foundSchedule);
     }
 
     @Override
