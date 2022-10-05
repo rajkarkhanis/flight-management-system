@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class ScheduleDto {
 
+    private int scheduleId;
     @NotBlank(message = "Source Airport cannot be empty")
     @Size(message = "Source airport must have 3 characters",min=3,max=3)
     private String sourceAirportCode;
@@ -21,6 +22,13 @@ public class ScheduleDto {
     @Future(message = "Departure date time should be a Future Date Time ")
     private LocalDateTime departureTime;
 
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
+    }
 
     public String getSourceAirportCode() {
         return sourceAirportCode;

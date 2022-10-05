@@ -31,7 +31,6 @@ class UserServiceImplementationTest {
     UserDao dao;
 
     @Test
-    @Disabled
     void testaddUser() throws InvalidEmail, InvalidPhoneNumber {
         User u = new User();
         u.setUserId(1);
