@@ -1,24 +1,39 @@
 package com.flights.dto;
 
-import javax.persistence.Column;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 public class FlightDto {
 
-    private BigInteger flightNumber;
+    private BigInteger flightId;
+    @NotEmpty(message = "Flight Model cannot be empty")
     private String flightModel;
+    @NotEmpty(message = "Flight Model cannot be empty")
     private String carrierName;
+    @NotNull(message = "Seat capacity cannot be null")@DecimalMin(value = "1", message = "Seat capacity should be greater than 0")
     private Integer seatCapacity;
 
-
-    public BigInteger getFlightNumber() {
-        return flightNumber;
+    public FlightDto() {
     }
 
-    public void setFlightNumber(BigInteger flightNumber) {
-        this.flightNumber = flightNumber;
+    public FlightDto(BigInteger flightId, String flightModel, String carrierName, Integer seatCapacity) {
+        this.flightId = flightId;
+        this.flightModel = flightModel;
+        this.carrierName = carrierName;
+        this.seatCapacity = seatCapacity;
     }
 
+    public FlightDto(String flightModel, String carrierName, Integer seatCapacity) {
+        this.flightModel = flightModel;
+        this.carrierName = carrierName;
+        this.seatCapacity = seatCapacity;
+    }
+
+    public BigInteger getFlightId(){
+        return flightId;
+    }
     public String getFlightModel() {
         return flightModel;
     }

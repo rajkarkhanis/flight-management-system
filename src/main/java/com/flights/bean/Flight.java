@@ -11,7 +11,6 @@ public class Flight {
 	@Id
 	@GeneratedValue
 	private BigInteger flightNumber;
-	@Column(unique=true)
 	private String flightModel;
 	private String carrierName;
 	private Integer seatCapacity;
