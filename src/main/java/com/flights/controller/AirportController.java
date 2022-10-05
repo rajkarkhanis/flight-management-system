@@ -23,9 +23,6 @@ public class AirportController {
     public Airport getAirport(@PathVariable("id") String airportCode) throws RecordNotFound {
         return airportService.viewAirport(airportCode);
     }
-    @PostMapping("/addAirport")
-    public Airport addAirport(@RequestBody AirportDto airport){
-        return airportService.addAirport(airport);
-    }
+
 
 }

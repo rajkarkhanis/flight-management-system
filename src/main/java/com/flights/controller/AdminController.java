@@ -3,6 +3,7 @@ package com.flights.controller;
 import com.flights.bean.*;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduleDao;
+import com.flights.dto.AirportDto;
 import com.flights.dto.FlightDto;
 import com.flights.dto.ScheduleDto;
 import com.flights.dto.ScheduledFlightDto;
@@ -35,6 +36,7 @@ public class AdminController {
     private final ScheduleDao scheduleDao;
 
     private final ScheduleService scheduleService;
+    private final AirportService airportService;
 
     private final BookingService bookingService;
     //    USER
@@ -176,5 +178,10 @@ Flight flight = flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber(
     public void deleteUser(@PathVariable("id") int userId) throws RecordNotFound{
         BigInteger bi = BigInteger.valueOf(userId);
         userService.deleteUser(bi);
+    }
+
+    @PostMapping("/addAirport")
+    public Airport addAirport(@RequestBody AirportDto airport){
+        return airportService.addAirport(airport);
     }
 }
