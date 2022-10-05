@@ -22,6 +22,16 @@ public class ScheduleDto {
     @Future(message = "Departure date time should be a Future Date Time ")
     private LocalDateTime departureTime;
 
+    public ScheduleDto() {
+    }
+
+    public ScheduleDto(String sourceAirportCode, String destinationAirportCode, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+        this.sourceAirportCode = sourceAirportCode;
+        this.destinationAirportCode = destinationAirportCode;
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
+    }
+
     public int getScheduleId() {
         return scheduleId;
     }
