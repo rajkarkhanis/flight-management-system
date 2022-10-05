@@ -11,6 +11,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -45,9 +48,37 @@ class UserServiceImplementationTest {
         );
 
         Mockito.when(dao.save(u)).thenReturn(u);
-        assertThat(userservice.addUser(userDto)).isEqualTo(u);
+        User newUser = userservice.addUser(userDto);
+        assertThat(newUser.getUserName()).isEqualTo(u.getUserName());
+        assertThat(newUser.getUserPhone()).isEqualTo(u.getUserPhone());
+        assertThat(newUser.getUserType()).isEqualTo(u.getUserType());
+        assertThat(newUser.getUserEmail()).isEqualTo(u.getUserEmail());
     }
 
+    @Test
+    void passwordEncoderTest() throws InvalidEmail, InvalidPhoneNumber{
+
+        User u = new User();
+        u.setUserId(1);
+        u.setUserType("Customer");
+        u.setUserName("Ria");
+        u.setUserPassword("123");
+        u.setUserEmail("Ria@gmail.com");
+        u.setUserPhone("9876543012");
+
+        UserDto userDto = new UserDto(
+                u.getUserType(),
+                u.getUserName(),
+                u.getUserPassword(),
+                u.getUserPhone(),
+                u.getUserEmail()
+        );
+
+        Mockito.when(dao.save(u)).thenReturn(u);
+        User newUser = userservice.addUser(userDto);
+assertThat(BCrypt.checkpw("123",newUser.getUserPassword()));
+
+    }
     @Test
     void viewUser() throws RecordNotFound {
         User u1 = new User();
