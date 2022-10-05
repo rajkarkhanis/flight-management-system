@@ -1,37 +1,22 @@
 package com.flights.dto;
 
-import com.flights.bean.Passenger;
-import com.flights.bean.ScheduledFlight;
-import com.flights.bean.User;
+
 import lombok.Data;
 
-import java.time.LocalDate;
+
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class BookingDto {
-
-//    private int bookingId;
-    private LocalDate bookingDate;
+    @NotNull(message = "userType cannot be empty")
     private List<PassengerDto> passengerList;
+    @NotNull(message = "Ticket cost cannot be null")
     private Double ticketCost;
+    @NotNull(message = "Scheduled Flight Id cannot be null")
     private int scheduledFlightId;
 
-//    public int getBookingId() {
-//        return bookingId;
-//    }
-//
-//    public void setBookingId(int bookingId) {
-//        this.bookingId = bookingId;
-//    }
 
-    public LocalDate getBookingDate() {
-        return bookingDate;
-    }
-
-    public void setBookingDate(LocalDate bookingDate) {
-        this.bookingDate = bookingDate;
-    }
 
     public List<PassengerDto> getPassengerList() {
         return passengerList;

@@ -1,23 +1,24 @@
 package com.flights.dto;
 
+import javax.validation.constraints.*;
 import java.math.BigInteger;
 
 public class PassengerDto {
 
-    private int passengerId;
+    @NotNull( message = "pnr Number cannot be null")
     private BigInteger pnrNumber;
+    @NotBlank( message = "Passenger cannot be blank")
+    @Size(message = "Passenger name must contain 2 to 32 characters", min=2,max=32)
     private String passengerName;
+    @NotNull(message = "Passenger age cannot be null")@DecimalMin(value="0",message = "age should be greater than 0")
+    @DecimalMax(value="150",message = "Age should be less than 150")
     private Integer passengerAge;
+    @NotBlank( message = "Passenger UIN cannot be null")
+    @Size(min=12,max=12,message = "passenger UIN must have 12 digits")
     private String passengerUIN;
+    @NotNull(message = "Passenger luggage cannot be null")
     private Double luggage;
 
-    public int getPassengerId() {
-        return passengerId;
-    }
-
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
-    }
 
     public BigInteger getPnrNumber() {
         return pnrNumber;
