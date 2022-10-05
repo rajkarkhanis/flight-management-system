@@ -3,7 +3,6 @@ package com.flights.service;
 import com.flights.bean.User;
 import com.flights.dao.UserDao;
 import com.flights.dto.UserDto;
-import com.flights.exception.InvalidEmail;
 import com.flights.exception.InvalidPhoneNumber;
 import com.flights.exception.RecordNotFound;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     private final PasswordEncoder passwordEncoder;
     @Override
-    public User addUser(UserDto user) throws InvalidEmail, InvalidPhoneNumber {
+    public User addUser(UserDto user) throws InvalidPhoneNumber {
         User newUser= new User();
         newUser.setUserEmail(user.getUserEmail());
         newUser.setUserName(user.getUserName());
@@ -57,7 +56,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User updateUser(User user) throws InvalidEmail, InvalidPhoneNumber,RecordNotFound {
+    public User updateUser(User user) throws InvalidPhoneNumber,RecordNotFound {
         int id = user.getUserId();
         User u = userRepo.findById(id).orElseThrow(()->new RecordNotFound(User.class.toString()));
         this.validateUser(user);
@@ -73,7 +72,10 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public void deleteUser(BigInteger userId) throws RecordNotFound {
         int id = userId.intValue(); //convert BigInteger to integer
-        userRepo.findById(id).orElseThrow(()->new RecordNotFound(User.class.toString()));
+
+        if(userRepo.findById(id).isEmpty())
+            throw new RecordNotFound(User.class.toString());
+
         userRepo.deleteById(id);
     }
 
