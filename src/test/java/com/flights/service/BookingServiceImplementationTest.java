@@ -140,7 +140,6 @@ class BookingServiceImplementationTest {
         booking.setTicketCost(4000.23);
 
         bookingDto = new BookingDto();
-        bookingDto.setBookingDate(booking.getBookingDate());
         bookingDto.setPassengerList(passengerDtoList);
         bookingDto.setScheduledFlight(scheduledFlight.getScheduledFlightId());
         bookingDto.setTicketCost(booking.getTicketCost());

@@ -92,7 +92,18 @@ public class AdminController {
         return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 
-    // Optional: Add modifySchedule & deleteSchedule
+    @PutMapping(value = "/modifySchedule")
+    public ResponseEntity<Schedule> modifySchedule(@RequestBody @Valid ScheduleDto scheduleDto) throws RecordNotFound {
+        Schedule schedule = scheduleService.modifySchedule(scheduleDto);
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/deleteSchedule/{scheduleId}")
+    public ResponseEntity<String> deleteSchedule(@PathVariable int scheduleId) throws RecordNotFound {
+        scheduleService.deleteSchedule(scheduleId);
+        String message = "Schedule deleted successfully";
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
     @PostMapping(value = "/scheduleFlight")
     public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody  @Valid ScheduledFlightDto scheduledFlightDto) throws SeatNotAvailable, RecordAlreadyExists, InvalidDateTime, RecordNotFound {
@@ -170,7 +181,7 @@ Flight flight = flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber(
     }
 
     @PutMapping("updateuser")
-    public User updateUser(@RequestBody  @Valid User user) throws Throwable {
+    public User updateUser(@RequestBody @Valid User user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber{
         return userService.updateUser(user);
     }
 

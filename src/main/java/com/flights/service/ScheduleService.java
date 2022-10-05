@@ -14,4 +14,8 @@ public interface ScheduleService {
     List<Schedule> viewSchedule();
 
     Schedule viewSchedule(int scheduleId) throws RecordNotFound;
+
+    Schedule modifySchedule(ScheduleDto scheduleDto) throws RecordNotFound;
+
+    void deleteSchedule(int scheduleId) throws RecordNotFound;
 }

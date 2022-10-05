@@ -16,8 +16,10 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 class ScheduleServiceImplementationTest {
@@ -81,12 +83,10 @@ class ScheduleServiceImplementationTest {
     }
 
     @Test
-    void viewSchedule() throws RecordNotFound {
-
+    void viewSchedule() {
         Mockito.when(scheduleDao.findAll())
                 .thenReturn(scheduleList);
         assertThat(scheduleService.viewSchedule()).isEqualTo(scheduleList);
-
     }
 
     @Test
@@ -99,4 +99,24 @@ class ScheduleServiceImplementationTest {
         assertThat(scheduleService.viewSchedule()).isEqualTo(scheduleList);
     }
 
+    @Test
+    void testModifySchedule() throws RecordNotFound {
+        Mockito.when(scheduleDao.findById(schedule.getScheduleId()))
+                .thenReturn(Optional.ofNullable(schedule));
+
+        Mockito.when(scheduleDao.save(schedule)).thenReturn(schedule);
+
+        assertThat(scheduleService.modifySchedule(scheduleDto)).isEqualTo(schedule);
+    }
+
+    @Test
+    void testDeleteSchedule() {
+        Mockito.when(scheduleDao.findById(schedule.getScheduleId()))
+                .thenReturn(Optional.ofNullable(schedule));
+
+        Mockito.when(scheduleDao.existsById(schedule.getScheduleId()))
+                .thenReturn(false);
+
+        assertFalse(scheduleDao.existsById(schedule.getScheduleId()));
+    }
 }
