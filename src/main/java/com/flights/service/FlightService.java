@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import com.flights.dto.FlightDto;
-import com.flights.exception.InvalidDataEntry;
 import com.flights.exception.RecordNotFound;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +11,9 @@ import com.flights.bean.Flight;
 @Service
 public interface FlightService {
    
-	public Flight addFlight(FlightDto flight) throws InvalidDataEntry;
+	public Flight addFlight(FlightDto flight);
 	
-	 public Flight modifyFlight(FlightDto flight) throws RecordNotFound, InvalidDataEntry,NullPointerException;
+	 public Flight modifyFlight(FlightDto flight) throws RecordNotFound,NullPointerException;
 	 
 	 public Flight viewFlight(BigInteger flightNumber)  throws RecordNotFound;
 	 

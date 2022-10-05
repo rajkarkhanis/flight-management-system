@@ -41,7 +41,7 @@ public class AdminController {
     private final UserService userService;
 
     @PostMapping(value = "/addFlight")
-    public ResponseEntity<Flight> addFlight(@RequestBody @Valid FlightDto flight) throws InvalidDataEntry, RecordAlreadyExists {
+    public ResponseEntity<Flight> addFlight(@RequestBody @Valid FlightDto flight) throws RecordAlreadyExists {
         Flight addedFlight = flightService.addFlight(flight);
         return new ResponseEntity<>(addedFlight, HttpStatus.OK);
     }
@@ -59,7 +59,7 @@ public class AdminController {
     }
 
     @PutMapping(value = "/modifyFlight")
-    public ResponseEntity<Flight> modifyFlight(@RequestBody  @Valid FlightDto flight) throws RecordNotFound, InvalidDataEntry {
+    public ResponseEntity<Flight> modifyFlight(@RequestBody  @Valid FlightDto flight) throws RecordNotFound {
         Flight modifiedFlight = flightService.modifyFlight(flight);
         return new ResponseEntity<>(modifiedFlight, HttpStatus.OK);
     }
@@ -93,7 +93,7 @@ public class AdminController {
     // Optional: Add modifySchedule & deleteSchedule
 
     @PostMapping(value = "/scheduleFlight")
-    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody  @Valid ScheduledFlightDto scheduledFlightDto) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
+    public ResponseEntity<ScheduledFlight> scheduleFlight(@RequestBody  @Valid ScheduledFlightDto scheduledFlightDto) throws SeatNotAvailable, RecordAlreadyExists, InvalidDateTime, RecordNotFound {
 Flight flight = flightDao.findByFlightNumber(scheduledFlightDto.getFlightNumber());
         ScheduledFlight newScheduledFlight = new ScheduledFlight(
                 flight,

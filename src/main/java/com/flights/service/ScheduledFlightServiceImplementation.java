@@ -8,6 +8,7 @@ import com.flights.dao.AirportDao;
 import com.flights.dao.FlightDao;
 import com.flights.dao.ScheduledFlightDao;
 import com.flights.exception.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +17,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
+@Service @RequiredArgsConstructor
 public class ScheduledFlightServiceImplementation implements ScheduledFlightService{
 
-    @Autowired
-    ScheduledFlightDao scheduledFlightDao;
-    @Autowired
-    FlightDao flightDao;
-    @Autowired
-    FlightService flightService;
-    @Autowired
-    AirportDao airportDao;
+    private final ScheduledFlightDao scheduledFlightDao;
+    private final FlightDao flightDao;
+    private final AirportDao airportDao;
 
     @Override
-    public ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
+    public ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDateTime, RecordNotFound {
         validateScheduledFlight(scheduledFlight);
         return scheduledFlightDao.save(scheduledFlight);
     }
@@ -73,9 +69,8 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
         ScheduledFlight scheduledFlight = scheduledFlightDao.getScheduledFlightByFlight(inputFlight);
         scheduledFlightDao.delete(scheduledFlight);
     }
-
     @Override
-    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport {
+    public void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDateTime, RecordNotFound {
         if (scheduledFlightDao.existsById(scheduledFlight.getScheduledFlightId())) {
             throw new RecordAlreadyExists("ScheduledFlight already exists");
         }
@@ -96,11 +91,11 @@ public class ScheduledFlightServiceImplementation implements ScheduledFlightServ
         }
 
         if (!airportDao.existsByAirportCode(schedule.getSourceAirport().getAirportCode())) {
-            throw new InvalidAirport("Source Airport is not present in the database");
+            throw new RecordNotFound("Source Airport");
         }
 
         if (!airportDao.existsByAirportCode(schedule.getDestinationAirport().getAirportCode())) {
-            throw new InvalidAirport("Destination Airport is not present in the database");
+            throw new RecordNotFound("Destination Airport");
         }
     }
 }

@@ -34,11 +34,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidDataEntry.class)
-    public ResponseEntity<ErrorDetails> invalidDataEntry(InvalidDataEntry ex,WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
     @ExceptionHandler(InvalidEmail.class)
     public ResponseEntity<ErrorDetails> invalidEmail(InvalidEmail ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
@@ -51,11 +46,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidAirport.class)
-    public ResponseEntity<ErrorDetails> invalidAirport(InvalidAirport ex, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
     @ExceptionHandler(RecordAlreadyExists.class)
     public ResponseEntity<ErrorDetails> recordAlreadyExists(RecordAlreadyExists ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));

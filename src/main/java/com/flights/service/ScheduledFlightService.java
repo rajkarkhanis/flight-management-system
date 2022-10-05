@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ScheduledFlightService {
     // Schedule a flight along with time, location, and capacity
-    ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport;
+    ScheduledFlight scheduleFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDateTime, RecordNotFound;
 
     // Return list of flights between two airports on a given date
     List<ScheduledFlight> viewScheduledFlights(Airport firstAirport, Airport secondAirport, LocalDate localDate);
@@ -30,5 +30,5 @@ public interface ScheduledFlightService {
     void deleteScheduledFlight(BigInteger flightNumber) throws RecordNotFound;
 
     // Validate attributes of scheduled flight
-    void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDataEntry, InvalidDateTime, InvalidAirport;
+    void validateScheduledFlight(ScheduledFlight scheduledFlight) throws SeatNotAvailable, RecordAlreadyExists, InvalidDateTime, RecordNotFound;
 }

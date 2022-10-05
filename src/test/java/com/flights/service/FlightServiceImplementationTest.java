@@ -3,8 +3,6 @@ package com.flights.service;
 import com.flights.bean.Flight;
 import com.flights.dao.FlightDao;
 import com.flights.dto.FlightDto;
-import com.flights.exception.InvalidDataEntry;
-import com.flights.exception.RecordAlreadyExists;
 import com.flights.exception.RecordNotFound;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,7 +25,7 @@ class FlightServiceImplementationTest {
   @MockBean
   FlightDao dao;
     @Test
-    void addFlight() throws  InvalidDataEntry {
+    void addFlight() {
       Flight f=new Flight();
       f.setFlightNumber(BigInteger.valueOf(1));
       f.setFlightModel("ABC");
@@ -39,7 +37,7 @@ class FlightServiceImplementationTest {
     }
 
     @Test
-    void modifyFlight() throws RecordNotFound, InvalidDataEntry {
+    void modifyFlight() throws RecordNotFound {
       Flight f=new Flight();
       f.setFlightNumber(BigInteger.valueOf(1));
       f.setFlightModel("ABC");
