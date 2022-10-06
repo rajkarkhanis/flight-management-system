@@ -30,7 +30,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     private final PasswordEncoder passwordEncoder;
     @Override
-    public User addUser(UserDto user) throws InvalidEmail, InvalidPhoneNumber {
+    public User addUser(UserDto user) throws InvalidPhoneNumber {
         User newUser= new User();
         newUser.setUserEmail(user.getUserEmail());
         newUser.setUserName(user.getUserName());
@@ -73,7 +73,10 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public void deleteUser(BigInteger userId) throws RecordNotFound {
         int id = userId.intValue(); //convert BigInteger to integer
-        userRepo.findById(id).orElseThrow(()->new RecordNotFound(User.class.toString()));
+
+        if(userRepo.findById(id).isEmpty())
+            throw new RecordNotFound(User.class.toString());
+
         userRepo.deleteById(id);
     }
 

@@ -48,7 +48,9 @@ public class FlightServiceImplementation implements FlightService {
 
 	@Override
 	public void deleteFlight(BigInteger flightNumber) throws RecordNotFound {
-		dao.findById(flightNumber).orElseThrow(()-> new RecordNotFound(Flight.class.toString()));
+
+		if(dao.findById(flightNumber).isEmpty())
+			throw new RecordNotFound(Flight.class.toString());
 		dao.deleteById(flightNumber);
 	}
 }

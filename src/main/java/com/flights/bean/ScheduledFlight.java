@@ -1,11 +1,9 @@
 package com.flights.bean;
 
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
 @Entity
-@Component
 public class ScheduledFlight {
 
     @Id @GeneratedValue
