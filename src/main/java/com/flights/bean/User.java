@@ -12,6 +12,7 @@ public class User {
 	@GeneratedValue
 	private int userId;
 	private Role userType;
+	@Column(unique = true)
 	private String userName;
 	private String userPassword;
 	private String userPhone;
