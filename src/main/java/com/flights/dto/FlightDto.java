@@ -7,7 +7,6 @@ import java.math.BigInteger;
 
 public class FlightDto {
 
-    @NotNull(message = "Flight Id cannot be null")
     private BigInteger flightId;
 
     @NotEmpty(message = "Flight Model cannot be empty")

@@ -32,13 +32,6 @@ class FlightDtoTest {
     }
 
     @Test
-    void testInvalidFlightId() {
-        FlightDto flightDto = new FlightDto(null, "A320", "Airbus", 100);
-        Set<ConstraintViolation<FlightDto>> violations = validator.validate(flightDto);
-        assertEquals(1, violations.size());
-    }
-
-    @Test
     void testInvalidFlightModel() {
         FlightDto flightDto = new FlightDto(BigInteger.ONE, "", "Airbus", 100);
         Set<ConstraintViolation<FlightDto>> violations = validator.validate(flightDto);
