@@ -27,18 +27,18 @@ public class CustomerController {
 
     private final BookingService bookingService;
     private final ScheduledFlightService scheduledFlightService;
-    private final UserService userservice;
+    private final UserService userService;
 
 
 //     CREATE A NEW USER
     @PostMapping("adduser")
     public ResponseEntity<User> addUser(@RequestBody @Valid UserDto user) throws InvalidEmail, InvalidPhoneNumber {
-        User newUser = userservice.addUser(user);
+        User newUser = userService.addUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
     @PutMapping("modifyuser")
     public ResponseEntity<User> modifyUser(@RequestBody @Valid UserDto user) throws InvalidEmail, InvalidPhoneNumber,RecordNotFound {
-        User newUser = userservice.updateUser(user);
+        User newUser = userService.updateUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
 
@@ -91,7 +91,15 @@ public class CustomerController {
         List<ScheduledFlight> scheduledFlightList = scheduledFlightService.viewScheduledFlights(flightNumber);
         return new ResponseEntity<>(scheduledFlightList, HttpStatus.OK);
     }
-//TODO: view all flights
-    //TODO:
+
+    @PutMapping("/updateUser")
+    public User updateUser(@RequestBody @Valid UserDto user) throws RecordNotFound, InvalidEmail, InvalidPhoneNumber{
+    return userService.updateUser(user);
+}
+    @DeleteMapping("deleteUser/{id}")
+    public void deleteUser(@PathVariable("id") int userId) throws RecordNotFound{
+        BigInteger bi = BigInteger.valueOf(userId);
+        userService.deleteUser(bi);
+    }
 
 }
