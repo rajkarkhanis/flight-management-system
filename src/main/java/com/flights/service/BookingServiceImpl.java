@@ -108,7 +108,7 @@ public class BookingServiceImpl implements  BookingService{
 
         //  Update available seats impl
         int initialSeatsAvailable = booking.getScheduledFlight().getAvailableSeats();
-        int currentSeatsAvailable = initialSeatsAvailable - booking.getNoOfPassengers();
+        int currentSeatsAvailable = initialSeatsAvailable + booking.getNoOfPassengers();
         booking.getScheduledFlight().setAvailableSeats(currentSeatsAvailable);
 
         repo.delete(booking);

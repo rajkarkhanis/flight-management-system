@@ -1,7 +1,6 @@
 package com.flights.dto;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -30,14 +29,6 @@ class FlightDtoTest {
         FlightDto flightDto = new FlightDto(BigInteger.ONE, "A320", "Airbus", 100);
         Set<ConstraintViolation<FlightDto>> violations = validator.validate(flightDto);
         assertTrue(violations.isEmpty());
-    }
-
-    @Test
-    @Disabled
-    void testInvalidFlightId() {
-        FlightDto flightDto = new FlightDto(null, "A320", "Airbus", 100);
-        Set<ConstraintViolation<FlightDto>> violations = validator.validate(flightDto);
-        assertEquals(1, violations.size());
     }
 
     @Test
