@@ -8,6 +8,8 @@ and rates in real-time. Travellers may want to make changes in their bookings. T
 application allows them to book, cancel, view and update their bookings with ease. Other
 than this, it eases the management of bookings too. All the bookings, flights, schedules and
 routes can be viewed, added and modified on a single application by the administrator.
+
+## Presentation: [Link](https://docs.google.com/presentation/d/e/2PACX-1vQErBauoQxa7mfq6Cp3vDpSguuyT8_u4CXSRQY7bDpzb3UgUgTlvijt-GUrm8_HwGMpl0OBJNfMF_ay/pub?start=false&loop=false&delayms=3000)
 ### Scopes:
 
 #### In scope:  
