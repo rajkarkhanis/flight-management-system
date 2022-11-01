@@ -133,3 +133,4 @@ services:
 1. ```kubectl apply -f deploy.yml```.
 2. ```kubectl apply -f service.yml```.
 3. To view Pods: ```kubectl get pods -o wide```
+ <img src="pods.png">
