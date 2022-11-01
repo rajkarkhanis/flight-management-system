@@ -8,7 +8,7 @@
 3. Select Amazon Machine Image as ```Amazon Linux 2 (64-bit)```
 4. Select Instance type as ```t2.micro``` (free tier)
 5. select Keypair ```jee-group3-key```
-6. Select Network as ``` raj2244-vpc```
+6. Select an appropriate VPC
 7. Ensure a **public subnet** is selected
 8. Select Security group as ```jee-group3-securitygroup``` (Open port 22 if creating new security group).
 9. Review Config and click on **Launch Instance**
@@ -21,7 +21,7 @@
 
 ## Step 3: Copy jar file to instance
 1. Use following command:  
-```scp -i "jee-group3-key.pem" .\flights-0.0.1-SNAPSHOT.jar ec2-user@ec2-3-219-170-106.compute-1.amazonaws.com:```.
+```scp -i <key-name> .\flights-0.0.1-SNAPSHOT.jar ec2-user@<public-dns>:```.
 2. Rename the file after connecting to EC2 ```mv flights-0.0.1-SNAPSHOT.jar flights.jar```
 3. 
 
@@ -73,17 +73,18 @@ services:
     ports:
       - 8080:8080
     environment:
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://postgres:5432/flights'      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: abc12345
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://postgres:5432/<db-name>'      
+      SPRING_DATASOURCE_USERNAME: <db-username>
+      SPRING_DATASOURCE_PASSWORD: <db-password>
 
   postgres:
     image: postgres:14-alpine
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=flights
-      - POSTGES_USER=postgres
-      - POSTGRES_PASSWORD=abc12345
+      - POSTGRES_DB=<db-name>
+      - POSTGES_USER=<db-username>
+      - POSTGRES_PASSWORD=<db-password>
 ```
 4. Run the config file using: ```docker-compose up -d```  
 -d : run in detached state
