@@ -35,6 +35,9 @@ administrator. Each of these would have some exclusive privileges.
 
 <hr>
 
+## Deployment
+Follow [Cloud Deployment](./CloudDeployment.md)
+
 ## Developer notes:   
 1. For Lombok's @RequiredArgsConstructor we need object to be: ```private final <DataType> variable```  
    </br>
